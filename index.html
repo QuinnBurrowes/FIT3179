@@ -11,15 +11,22 @@
   <div id="vis"></div>
   <script type="text/javascript">
     var spec = {
+      {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "description": "Obesity prevalence by Australian state",
       "width": 600,
       "height": 500,
-      "projection": {"type": "mercator", "center": [134, -28], "scale": 600},
+      "projection": {
+        "type": "mercator",
+        "center": [134, -28],
+        "scale": 600
+      },
       "layer": [
         {
-          "data": {"graticule": {"step": [30, 30]}},
-          "mark": {"type": "geoshape", "stroke": "#999999", "strokeWidth": 0.5}
+          "data": {
+            "graticule": {"step": [30, 30]}
+          },
+          "mark": {"type": "geoshape", "stroke": "#3b3b3b", "strokeWidth": 0.5}
         },
         {
           "data": {
@@ -30,7 +37,9 @@
             {
               "lookup": "properties.STATE_NAME",
               "from": {
-                "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/health_risks_real.csv"},
+                "data": {
+                  "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/health_risks_real.csv"
+                },
                 "key": "STATE_NAME",
                 "fields": ["value"]
               }
@@ -52,7 +61,10 @@
         }
       ],
       "title": "Adult Overweight/Obesity Prevalence by State, Australia (% of adults)",
-      "config": {"view": {"stroke": "transparent"}, "background": "#7fcdff"}
+      "config": {
+        "view": {"stroke": "transparent"},
+        "background": "#7fcdff"
+      }
     };
     vegaEmbed('#vis', spec);
   </script>
