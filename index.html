@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Adult Overweight/Obesity Prevalence by State, Australia</title>
+  <title>Adult Overweight/Obesity Prevalence</title>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
@@ -11,65 +11,50 @@
   <div id="vis"></div>
   <script type="text/javascript">
     var spec = {
-      {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Obesity prevalence by Australian state",
-  "width": 600,
-  "height": 500,
-  "projection": {
-    "type": "mercator",
-    "center": [134, -28],
-    "scale": 600
-  },
-  "layer": [
-    {
-      "data": {
-        "graticule": {"step": [30, 30]}
-      },
-      "mark": {"type": "geoshape", "stroke": "#3b3b3b", "strokeWidth": 0.5}
-    },
-    {
-      "data": {
-        "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json",
-        "format": {"type": "json", "property": "features"}
-      },
-      "transform": [
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "description": "Obesity prevalence by Australian state",
+      "width": 600,
+      "height": 500,
+      "projection": {"type": "mercator", "center": [134, -28], "scale": 600},
+      "layer": [
         {
-          "lookup": "properties.STATE_NAME",
-          "from": {
-            "data": {
-              "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/health_risks_real.csv"
+          "data": {"graticule": {"step": [30, 30]}},
+          "mark": {"type": "geoshape", "stroke": "#999999", "strokeWidth": 0.5}
+        },
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json",
+            "format": {"type": "json", "property": "features"}
+          },
+          "transform": [
+            {
+              "lookup": "properties.STATE_NAME",
+              "from": {
+                "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/health_risks_real.csv"},
+                "key": "STATE_NAME",
+                "fields": ["value"]
+              }
+            }
+          ],
+          "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 1},
+          "encoding": {
+            "color": {
+              "field": "value",
+              "type": "quantitative",
+              "title": "% overweight adults",
+              "scale": {"scheme": "reds"}
             },
-            "key": "STATE_NAME",
-            "fields": ["value"]
+            "tooltip": [
+              {"field": "properties.STATE_NAME", "title": "State"},
+              {"field": "value", "title": "% overweight adults"}
+            ]
           }
         }
       ],
-      "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 1},
-      "encoding": {
-        "color": {
-          "field": "value",
-          "type": "quantitative",
-          "title": "% overweight adults",
-          "scale": {"scheme": "reds"}
-        },
-        "tooltip": [
-          {"field": "properties.STATE_NAME", "title": "State"},
-          {"field": "value", "title": "% overweight adults"}
-        ]
-      }
-    }
-  ],
-  "title": "Adult Overweight/Obesity Prevalence by State, Australia (% of adults)",
-  "config": {
-    "view": {"stroke": "transparent"},
-    "background": "#7fcdff"
-  }
-}
-
+      "title": "Adult Overweight/Obesity Prevalence by State, Australia (% of adults)",
+      "config": {"view": {"stroke": "transparent"}, "background": "#7fcdff"}
     };
-    vegaEmbed('#vis', spec).then(function(result) {
-    }).catch(console.error);
+    vegaEmbed('#vis', spec);
   </script>
 </body>
 </html>
