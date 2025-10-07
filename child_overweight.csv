@@ -1,0 +1,73 @@
+AgeGroup,Gender,Category,Percent
+2–4,Boys,Overweight but not obese,12.6
+2–4,Boys,Obese,2.8
+2–4,Boys,Overweight or obese,13.6
+2–4,Girls,Overweight but not obese,14.7
+2–4,Girls,Obese,11.5
+2–4,Girls,Overweight or obese,24.1
+2–4,All children,Overweight but not obese,12.6
+2–4,All children,Obese,6.1
+2–4,All children,Overweight or obese,19.6
+5–7,Boys,Overweight but not obese,16.1
+5–7,Boys,Obese,10.9
+5–7,Boys,Overweight or obese,25.8
+5–7,Girls,Overweight but not obese,20.8
+5–7,Girls,Obese,5.0
+5–7,Girls,Overweight or obese,24.3
+5–7,All children,Overweight but not obese,17.8
+5–7,All children,Obese,7.7
+5–7,All children,Overweight or obese,25.5
+8–11,Boys,Overweight but not obese,20.8
+8–11,Boys,Obese,8.5
+8–11,Boys,Overweight or obese,29.5
+8–11,Girls,Overweight but not obese,21.9
+8–11,Girls,Obese,7.3
+8–11,Girls,Overweight or obese,28.8
+8–11,All children,Overweight but not obese,20.8
+8–11,All children,Obese,8.1
+8–11,All children,Overweight or obese,29.2
+12–15,Boys,Overweight but not obese,19.8
+12–15,Boys,Obese,10.2
+12–15,Boys,Overweight or obese,29.6
+12–15,Girls,Overweight but not obese,17.8
+12–15,Girls,Obese,6.6
+12–15,Girls,Overweight or obese,24.3
+12–15,All children,Overweight but not obese,18.2
+12–15,All children,Obese,8.8
+12–15,All children,Overweight or obese,26.9
+16–17,Boys,Overweight but not obese,20.4
+16–17,Boys,Obese,11.8
+16–17,Boys,Overweight or obese,31.7
+16–17,Girls,Overweight but not obese,17.9
+16–17,Girls,Obese,6.6
+16–17,Girls,Overweight or obese,26.4
+16–17,All children,Overweight but not obese,20.5
+16–17,All children,Obese,8.6
+16–17,All children,Overweight or obese,29.4
+Total 2–17,Boys,Overweight but not obese,18.2
+Total 2–17,Boys,Obese,8.6
+Total 2–17,Boys,Overweight or obese,26.8
+Total 2–17,Girls,Overweight but not obese,18.7
+Total 2–17,Girls,Obese,7.4
+Total 2–17,Girls,Overweight or obese,25.8
+Total 2–17,All children,Overweight but not obese,18.3
+Total 2–17,All children,Obese,8.1
+Total 2–17,All children,Overweight or obese,26.4
+Total 5–17,Boys,Overweight but not obese,19.4
+Total 5–17,Boys,Obese,9.9
+Total 5–17,Boys,Overweight or obese,29.2
+Total 5–17,Girls,Overweight but not obese,19.5
+Total 5–17,Girls,Obese,6.4
+Total 5–17,Girls,Overweight or obese,26.1
+Total 5–17,All children,Overweight but not obese,19.5
+Total 5–17,All children,Obese,8.3
+Total 5–17,All children,Overweight or obese,27.7
+Total 15–17,Boys,Overweight but not obese,18.9
+Total 15–17,Boys,Obese,10.3
+Total 15–17,Boys,Overweight or obese,28.3
+Total 15–17,Girls,Overweight but not obese,17.6
+Total 15–17,Girls,Obese,7.2
+Total 15–17,Girls,Overweight or obese,23.8
+Total 15–17,All children,Overweight but not obese,17.9
+Total 15–17,All children,Obese,9.2
+Total 15–17,All children,Overweight or obese,26.1
