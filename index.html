@@ -11,29 +11,29 @@
       font-family: Arial, sans-serif;
       margin: 30px;
       background: #f9f9f9;
-      text-align: center; /* Centers all text like your title */
+      text-align: center;
     }
-  
+
     h1 {
       margin-bottom: 40px;
     }
-  
-    /* Center each visualization block */
-    .vis-container {
-      display: inline-block;     /* shrink to fit its content */
-      margin: 40px auto;         /* center horizontally */
-      text-align: center;        /* center contents inside */
-    }
-  
-    /* Force Vega charts to align center */
-    .vis-container .vega-embed,
-    .vis-container > div {
-      display: inline-block;
-      margin: 0 auto;
-    }
-</style>
 
+    .vis-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 40px auto;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
 </head>
+
 <body>
 
   <h1>Overweight, Obesity & Health Outcomes in Australia</h1>
@@ -96,35 +96,93 @@
       "config": {"view": {"stroke": "transparent"}, "background": "#7fcdff"}
     };
 
-    // Child Overweight Chart
+    // Child Overweight Chart (interactive + average line)
     var childSpec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/child_overweight.csv"},
-      "transform": [{"filter": "datum.Category == 'Overweight or obese'"}],
-      "params": [{
-        "name": "genderSelect",
-        "value": "Boys",
-        "bind": {"input": "select", "options": ["Boys", "Girls"], "name": "Select Gender: "}
-      }],
+      "title": {
+        "text": "Prevalence of Overweight or Obese Children in Australia (2–17 years)",
+        "fontSize": 18,
+        "fontWeight": "bold"
+      },
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/child_overweight.csv"
+      },
+      "transform": [
+        {"filter": "datum.Category == 'Overweight or obese'"},
+        {"filter": "genderSelect == 'All' ? true : datum.Gender == genderSelect"}
+      ],
+      "params": [
+        {
+          "name": "genderSelect",
+          "value": "Boys",
+          "bind": {
+            "input": "select",
+            "options": ["All", "Boys", "Girls"],
+            "labels": ["All", "Boys only", "Girls only"],
+            "name": "Select Gender: "
+          }
+        }
+      ],
       "width": 600,
       "height": 350,
-      "mark": "bar",
-      "encoding": {
-        "x": {"field": "AgeGroup", "type": "ordinal", "title": "Age Group"},
-        "y": {"field": "Percent", "type": "quantitative", "title": "Prevalence (%)"},
-        "color": {"field": "Gender", "type": "nominal", "title": "Gender"},
-        "tooltip": [
-          {"field": "AgeGroup"}, {"field": "Gender"}, {"field": "Percent", "format": ".1f"}
-        ]
-      }
+      "layer": [
+        {
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "field": "AgeGroup",
+              "type": "ordinal",
+              "title": "Age Group",
+              "sort": ["2-4", "5-7", "8-11", "12-15", "16-17"]
+            },
+            "y": {
+              "field": "Percent",
+              "type": "quantitative",
+              "title": "Prevalence (%)",
+              "scale": {"domain": [0, 40]}
+            },
+            "color": {
+              "field": "Gender",
+              "type": "nominal",
+              "title": "Gender",
+              "scale": {"domain": ["Boys", "Girls"], "range": ["#1f77b4", "#ff7f0e"]}
+            },
+            "tooltip": [
+              {"field": "AgeGroup", "type": "ordinal"},
+              {"field": "Gender", "type": "nominal"},
+              {"field": "Percent", "type": "quantitative", "format": ".1f"}
+            ]
+          }
+        },
+        {
+          "mark": {"type": "rule", "color": "red", "strokeDash": [4, 2]},
+          "encoding": {"y": {"datum": 26.4}}
+        },
+        {
+          "mark": {"type": "text", "color": "red", "dx": 5, "dy": -5, "align": "left"},
+          "encoding": {
+            "y": {"datum": 26.4},
+            "x": {"value": 0},
+            "text": {"value": "All children (2–17) = 26.4%"}
+          }
+        }
+      ]
     };
 
-    // Death Causes Over Time Line Chart
+    // Death Causes Over Time
     var deathSpec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": {
+        "text": "Trends in Major Causes of Death in Australia (2014–2023)",
+        "fontSize": 18,
+        "fontWeight": "bold",
+        "anchor": "start"
+      },
       "width": 600,
       "height": 400,
-      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes_old.csv"},
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes_old.csv"
+      },
       "mark": {"type": "line", "point": true, "strokeWidth": 3},
       "encoding": {
         "x": {"field": "Year", "type": "temporal", "axis": {"title": "Year"}},
