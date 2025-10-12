@@ -1,79 +1,21 @@
-Cause,Year,Deaths
-Ischaemic heart diseases,2014,20269
-Ischaemic heart diseases,2018,18083
-Ischaemic heart diseases,2022,18782
-Ischaemic heart diseases,2023,16922
-Dementia (including Alzheimer's disease),2014,11998
-Dementia (including Alzheimer's disease),2018,14222
-Dementia (including Alzheimer's disease),2022,17111
-Dementia (including Alzheimer's disease),2023,16685
-Cerebrovascular diseases,2014,10745
-Cerebrovascular diseases,2018,10099
-Cerebrovascular diseases,2022,9838
-Cerebrovascular diseases,2023,9359
-Malignant neoplasm of trachea, bronchus and lung,2014,8274
-Malignant neoplasm of trachea, bronchus and lung,2018,8663
-Malignant neoplasm of trachea, bronchus and lung,2022,9051
-Malignant neoplasm of trachea, bronchus and lung,2023,8976
-Chronic lower respiratory diseases,2014,7840
-Chronic lower respiratory diseases,2018,8037
-Chronic lower respiratory diseases,2022,8606
-Chronic lower respiratory diseases,2023,8359
-Diabetes,2014,4378
-Diabetes,2018,4763
-Diabetes,2022,6074
-Diabetes,2023,5942
-Malignant neoplasm of colon, sigmoid, rectum and anus,2014,5306
-Malignant neoplasm of colon, sigmoid, rectum and anus,2018,5458
-Malignant neoplasm of colon, sigmoid, rectum and anus,2022,5414
-Malignant neoplasm of colon, sigmoid, rectum and anus,2023,5495
-Malignant neoplasms of lymphoid, haematopoietic and related tissue,2014,4288
-Malignant neoplasms of lymphoid, haematopoietic and related tissue,2018,4690
-Malignant neoplasms of lymphoid, haematopoietic and related tissue,2022,5169
-Malignant neoplasms of lymphoid, haematopoietic and related tissue,2023,5121
-COVID-19,2022,9862
-COVID-19,2023,5001
-Diseases of the urinary system,2014,3145
-Diseases of the urinary system,2018,3298
-Diseases of the urinary system,2022,4573
-Diseases of the urinary system,2023,4533
-Accidental falls,2014,2411
-Accidental falls,2018,3055
-Accidental falls,2022,4114
-Accidental falls,2023,4105
-Heart failure and ill-defined heart disease,2014,3457
-Heart failure and ill-defined heart disease,2018,3179
-Heart failure and ill-defined heart disease,2022,3932
-Heart failure and ill-defined heart disease,2023,4022
-Malignant neoplasm of prostate,2014,3109
-Malignant neoplasm of prostate,2018,3317
-Malignant neoplasm of prostate,2022,3800
-Malignant neoplasm of prostate,2023,3726
-Malignant neoplasm of pancreas,2014,2556
-Malignant neoplasm of pancreas,2018,3094
-Malignant neoplasm of pancreas,2022,3688
-Malignant neoplasm of pancreas,2023,3724
-Malignant neoplasm of breast,2014,2850
-Malignant neoplasm of breast,2018,3047
-Malignant neoplasm of breast,2022,3170
-Malignant neoplasm of breast,2023,3259
-Intentional self-harm (suicide),2014,2937
-Intentional self-harm (suicide),2018,3205
-Intentional self-harm (suicide),2022,3288
-Intentional self-harm (suicide),2023,3214
-Influenza and pneumonia,2014,2893
-Influenza and pneumonia,2018,2942
-Influenza and pneumonia,2022,2776
-Influenza and pneumonia,2023,2886
-Cardiac arrhythmias,2014,2142
-Cardiac arrhythmias,2018,2479
-Cardiac arrhythmias,2022,2784
-Cardiac arrhythmias,2023,2718
-Hypertensive diseases,2014,2236
-Hypertensive diseases,2018,2206
-Hypertensive diseases,2022,2650
-Hypertensive diseases,2023,2684
-Cirrhosis and other diseases of liver,2014,1764
-Cirrhosis and other diseases of liver,2018,1982
-Cirrhosis and other diseases of liver,2022,2613
-Cirrhosis and other diseases of liver,2023,2556
+Year,Cause,Deaths
+2014,Ischaemic heart disease,20269
+2018,Ischaemic heart disease,18083
+2022,Ischaemic heart disease,18782
+2023,Ischaemic heart disease,16922
+2014,Dementia and Alzheimer's,11998
+2018,Dementia and Alzheimer's,14222
+2022,Dementia and Alzheimer's,17111
+2023,Dementia and Alzheimer's,16685
+2014,Chronic lower respiratory diseases,7840
+2018,Chronic lower respiratory diseases,8037
+2022,Chronic lower respiratory diseases,8606
+2023,Chronic lower respiratory diseases,8359
+2014,Lung cancer,8274
+2018,Lung cancer,8663
+2022,Lung cancer,9051
+2023,Lung cancer,8976
+2014,Suicide,2937
+2018,Suicide,3205
+2022,Suicide,3288
+2023,Suicide,3214
