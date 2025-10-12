@@ -8,53 +8,31 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <style>
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      margin: 40px;
-      background-color: #f9f9f9;
-      color: #333;
-      line-height: 1.6;
-    }
-  
-    h1, h2 {
-      text-align: center;
-      color: #222;
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #f9f9f9;
+      text-align: center; /* Centers all text like your title */
     }
   
     h1 {
-      font-size: 28px;
-      margin-bottom: 5px;
+      margin-bottom: 40px;
     }
   
-    h2 {
-      font-size: 22px;
-      margin-top: 60px;
-    }
-  
-    p {
-      max-width: 800px;
-      margin: 0 auto 20px;
-      text-align: center;
-      font-size: 16px;
-    }
-  
-    /* ✅ Center the charts */
+    /* Center each visualization block */
     .vis-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 40px auto;
+      display: inline-block;     /* shrink to fit its content */
+      margin: 40px auto;         /* center horizontally */
+      text-align: center;        /* center contents inside */
     }
   
-    /* Keep footer readable and separated */
-    footer {
-      text-align: center;
-      font-size: 13px;
-      color: #666;
-      margin-top: 60px;
-      border-top: 1px solid #ccc;
-      padding-top: 10px;
+    /* Force Vega charts to align center */
+    .vis-container .vega-embed,
+    .vis-container > div {
+      display: inline-block;
+      margin: 0 auto;
     }
 </style>
+
 </head>
 <body>
 
