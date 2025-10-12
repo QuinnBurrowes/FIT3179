@@ -93,19 +93,12 @@
           }
         }
       ],
-      "title": {
-        "text": "Adult Overweight/Obesity Prevalence by State, Australia (2022)",
-        "fontSize": 18,
-        "fontWeight": "bold",
-        "anchor": "start"
-      },
       "config": {"view": {"stroke": "transparent"}, "background": "#7fcdff"}
     };
 
     // Child Overweight Chart
     var childSpec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": {"text": "Prevalence of Overweight or Obese Children (2–17 years)", "fontSize": 18, "fontWeight": "bold"},
       "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/child_overweight.csv"},
       "transform": [{"filter": "datum.Category == 'Overweight or obese'"}],
       "params": [{
@@ -129,12 +122,6 @@
     // Death Causes Over Time Line Chart
     var deathSpec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": {
-        "text": "Trends in Major Causes of Death in Australia (2014–2023)",
-        "fontSize": 18,
-        "fontWeight": "bold",
-        "anchor": "start"
-      },
       "width": 600,
       "height": 400,
       "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes_old.csv"},
