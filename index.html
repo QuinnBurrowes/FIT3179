@@ -14,29 +14,38 @@
       color: #333;
       line-height: 1.6;
     }
+  
     h1, h2 {
       text-align: center;
       color: #222;
     }
+  
     h1 {
       font-size: 28px;
       margin-bottom: 5px;
     }
+  
     h2 {
       font-size: 22px;
       margin-top: 60px;
     }
+  
     p {
       max-width: 800px;
       margin: 0 auto 20px;
       text-align: center;
       font-size: 16px;
     }
+  
+    /* ✅ Center the charts */
     .vis-container {
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin: 40px auto;
-      max-width: 800px;
     }
+  
+    /* Keep footer readable and separated */
     footer {
       text-align: center;
       font-size: 13px;
@@ -45,7 +54,7 @@
       border-top: 1px solid #ccc;
       padding-top: 10px;
     }
-  </style>
+</style>
 </head>
 <body>
 
