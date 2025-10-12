@@ -1,0 +1,31 @@
+Age_Group,Minutes_Category,Proportion
+15–17,0 minutes,8.8
+15–17,1–149 minutes,15.6
+15–17,150–300 minutes,20.3
+15–17,300+ minutes,54.8
+18–24,0 minutes,6.3
+18–24,1–149 minutes,12.9
+18–24,150–300 minutes,16.4
+18–24,300+ minutes,64.9
+25–34,0 minutes,7.4
+25–34,1–149 minutes,15.6
+25–34,150–300 minutes,19.2
+25–34,300+ minutes,57.5
+35–44,0 minutes,9.1
+35–44,1–149 minutes,17.9
+35–44,150–300 minutes,20.1
+35–44,300+ minutes,53.1
+45–54,0 minutes,10.5
+45–54,1–149 minutes,15.9
+45–54,150–300 minutes,19.2
+45–54,300+ minutes,54.2
+55–64,0 minutes,12.9
+55–64,1–149 minutes,18.5
+55–64,150–300 minutes,17.7
+55–64,300+ minutes,50.8
+65+,0 minutes,22.1
+65+,1–149 minutes,20.7
+65+,150–300 minutes,19.5
+65+,300+ minutes,37.6
+
+  source: https://www.abs.gov.au/statistics/health/health-conditions-and-risks/national-health-survey/latest-release 
