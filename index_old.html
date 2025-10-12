@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Adult Overweight/Obesity Prevalence</title>
+  <meta charset="utf-8">
+  <title>Overweight & Obesity in Australia</title>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    .vis-container {
+      display: block;
+      margin: 40px auto;
+      max-width: 800px;
+    }
+  </style>
 </head>
 <body>
-  <div id="vis"></div>
+  <h1>Overweight & Obesity Prevalence in Australia</h1>
+  <div class="vis-container" id="adult-vis"></div>
+  <br><br>
+  <div class="vis-container" id="child-vis"></div>
+
   <script type="text/javascript">
-    var spec = {
+    // Adult overweight map spec
+    var adultSpec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "description": "Obesity prevalence by Australian state",
       "width": 600,
@@ -50,10 +71,95 @@
           }
         }
       ],
-      "title": "Adult Overweight/Obesity Prevalence by State, Australia (2022, % of adults)",
+      "title": {
+        "text": "Adult Overweight/Obesity Prevalence by State, Australia (2022, % of adults)",
+        "fontSize": 18,
+        "fontWeight": "bold",
+        "anchor": "start"
+      },
       "config": {"view": {"stroke": "transparent"}, "background": "#7fcdff"}
     };
-    vegaEmbed('#vis', spec);
+
+    // Child overweight prevalence spec
+    var childSpec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": {
+        "text": "Prevalence of Overweight or Obese Children in Australia (2–17 years)",
+        "fontSize": 18,
+        "fontWeight": "bold"
+      },
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/child_overweight.csv"
+      },
+      "transform": [
+        {"filter": "datum.Category == 'Overweight or obese'"},
+        {
+          "filter": "genderSelect == 'All' ? (datum.Gender == 'Boys' || datum.Gender == 'Girls') : datum.Gender == genderSelect"
+        }
+      ],
+      "params": [
+        {
+          "name": "genderSelect",
+          "value": "Boys",
+          "bind": {
+            "input": "select",
+            "options": ["Boys", "Girls"],
+            "labels": ["Boys only", "Girls only"],
+            "name": "Select Gender: "
+          }
+        }
+      ],
+      "width": 600,
+      "height": 350,
+      "layer": [
+        {
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "field": "AgeGroup",
+              "type": "ordinal",
+              "title": "Age Group",
+              "sort": ["2-4", "5-7", "8-11", "12-15", "16-17"]
+            },
+            "y": {
+              "field": "Percent",
+              "type": "quantitative",
+              "title": "Prevalence (%)",
+              "scale": {"domain": [0, 40]}
+            },
+            "color": {
+              "field": "Gender",
+              "type": "nominal",
+              "title": "Gender",
+              "scale": {"domain": ["Boys", "Girls"], "range": ["#1f77b4", "#ff7f0e"]}
+            },
+            "tooltip": [
+              {"field": "AgeGroup", "type": "ordinal"},
+              {"field": "Gender", "type": "nominal"},
+              {"field": "Percent", "type": "quantitative", "format": ".1f"}
+            ]
+          }
+        },
+        {
+          "mark": {"type": "rule", "color": "red", "strokeDash": [4, 2]},
+          "encoding": {
+            "y": {"datum": 26.4}
+          }
+        },
+        {
+          "mark": {"type": "text", "color": "red", "dx": 5, "dy": -5, "align": "left"},
+          "encoding": {
+            "y": {"datum": 26.4},
+            "x": {"value": 0},
+            "text": {"value": "All children (2-17) = 26.4%"}
+          }
+        }
+      ]
+    };
+
+    // Embed both
+    vegaEmbed('#adult-vis', adultSpec);
+    vegaEmbed('#child-vis', childSpec);
   </script>
 </body>
 </html>
