@@ -1,7 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
+<html lang="en"><head><style id="vega-tooltip-style">#vg-tooltip-element {
+  visibility: hidden;
+  padding: 8px;
+  position: fixed;
+  z-index: 1000;
+  font-family: sans-serif;
+  font-size: 11px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  /* The default theme is the light theme. */
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #d9d9d9;
+  color: black;
+}
+#vg-tooltip-element.visible {
+  visibility: visible;
+}
+#vg-tooltip-element h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+#vg-tooltip-element table {
+  border-spacing: 0;
+}
+#vg-tooltip-element table tr {
+  border: none;
+}
+#vg-tooltip-element table tr td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+#vg-tooltip-element table tr td.key {
+  color: #808080;
+  max-width: 150px;
+  text-align: right;
+  padding-right: 4px;
+}
+#vg-tooltip-element table tr td.value {
+  display: block;
+  max-width: 300px;
+  max-height: 7em;
+  text-align: left;
+}
+#vg-tooltip-element.dark-theme {
+  background-color: rgba(32, 32, 32, 0.9);
+  border: 1px solid #f5f5f5;
+  color: white;
+}
+#vg-tooltip-element.dark-theme td.key {
+  color: #bfbfbf;
+}
+</style>
+  <meta charset="utf-8">
   <title>Health Risks and Outcomes — Australia</title>
 
   <!-- Vega -->
@@ -10,9 +62,9 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
   <!-- Inter font for consistent typography -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root{
       --max-width: 1100px;
@@ -136,7 +188,125 @@
       text-align: center;
     }
   </style>
-</head>
+<style id="vega-embed-style">.vega-embed {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+}
+.vega-embed.has-actions {
+  padding-right: 38px;
+}
+.vega-embed details:not([open]) > :not(summary) {
+  display: none !important;
+}
+.vega-embed summary {
+  list-style: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 6px;
+  z-index: 1000;
+  background: white;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  color: #1b1e23;
+  border: 1px solid #aaa;
+  border-radius: 999px;
+  opacity: 0.2;
+  transition: opacity 0.4s ease-in;
+  cursor: pointer;
+  line-height: 0px;
+}
+.vega-embed summary::-webkit-details-marker {
+  display: none;
+}
+.vega-embed summary:active {
+  box-shadow: #aaa 0px 0px 0px 1px inset;
+}
+.vega-embed summary svg {
+  width: 14px;
+  height: 14px;
+}
+.vega-embed details[open] summary {
+  opacity: 0.7;
+}
+.vega-embed:hover summary, .vega-embed:focus-within summary {
+  opacity: 1 !important;
+  transition: opacity 0.2s ease;
+}
+.vega-embed .vega-actions {
+  position: absolute;
+  z-index: 1001;
+  top: 35px;
+  right: -9px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid #d9d9d9;
+  background: white;
+  animation-duration: 0.15s;
+  animation-name: scale-in;
+  animation-timing-function: cubic-bezier(0.2, 0, 0.13, 1.5);
+  text-align: left;
+}
+.vega-embed .vega-actions a {
+  padding: 8px 16px;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #434a56;
+  text-decoration: none;
+}
+.vega-embed .vega-actions a:hover, .vega-embed .vega-actions a:focus {
+  background-color: #f7f7f9;
+  color: black;
+}
+.vega-embed .vega-actions::before, .vega-embed .vega-actions::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+}
+.vega-embed .vega-actions::before {
+  left: auto;
+  right: 14px;
+  top: -16px;
+  border: 8px solid rgba(0, 0, 0, 0);
+  border-bottom-color: #d9d9d9;
+}
+.vega-embed .vega-actions::after {
+  left: auto;
+  right: 15px;
+  top: -14px;
+  border: 7px solid rgba(0, 0, 0, 0);
+  border-bottom-color: #fff;
+}
+.vega-embed .chart-wrapper.fit-x {
+  width: 100%;
+}
+.vega-embed .chart-wrapper.fit-y {
+  height: 100%;
+}
+
+.vega-embed-wrapper {
+  max-width: 100%;
+  overflow: auto;
+  padding-right: 14px;
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+</style></head>
 <body>
 
   <header>
@@ -160,25 +330,25 @@
       <div class="grid">
         <!-- Adult Overweight Map (real chart) -->
         <div class="vis-card" id="card-adult">
-          <div id="adult-vis"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="adult-vis"><canvas width="815" height="430" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="caption">Adult overweight/obesity prevalence by state (2022). Hover a state for details.</div>
         </div>
 
         <!-- Placeholder chart for alignment (real chart exists at left) -->
         <div class="vis-card" id="card-placeholder-1">
-          <div id="placeholder-1"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-1"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="placeholder-note">Placeholder chart — other physical indicator</div>
         </div>
 
         <!-- Child Overweight (real chart) -->
         <div class="vis-card" id="card-child">
-          <div id="child-vis"></div>
-          <div class="caption">Child overweight prevalence by age & gender (interactive).</div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="child-vis"><canvas width="807" height="848" class="marks"></canvas><form class="vega-bindings"><div class="vega-bind"><label><span class="vega-bind-name">Select gender: </span><select name="genderSelect"><option value="All" selected="true">All</option><option value="Boys">Boys</option><option value="Girls">Girls</option></select></label></div></form></div>
+          <div class="caption">Child overweight prevalence by age &amp; gender (interactive).</div>
         </div>
 
         <!-- Placeholder chart -->
         <div class="vis-card" id="card-placeholder-2">
-          <div id="placeholder-2"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-2"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="placeholder-note">Placeholder chart — physical trends</div>
         </div>
       </div>
@@ -195,25 +365,25 @@
       <div class="grid">
         <!-- Placeholder: Psychological Distress (we'll render a small stacked bar placeholder or text) -->
         <div class="vis-card" id="card-psych">
-          <div id="psych-placeholder"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="psych-placeholder"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="caption">Psychological distress by age and sex (placeholder).</div>
         </div>
 
         <!-- Deaths time-series (real chart: includes suicide, dementia, etc.) -->
         <div class="vis-card" id="card-death">
-          <div id="death-vis"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="death-vis"><canvas width="934" height="427" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="caption">Time trends for major causes of death (2014–2023).</div>
         </div>
 
         <!-- Placeholder: mental services map/chart -->
         <div class="vis-card" id="card-placeholder-3">
-          <div id="placeholder-3"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-3"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="placeholder-note">Placeholder: mental health services availability</div>
         </div>
 
         <!-- Placeholder: suicide breakdown -->
         <div class="vis-card" id="card-placeholder-4">
-          <div id="placeholder-4"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-4"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="placeholder-note">Placeholder: suicide by age/sex</div>
         </div>
       </div>
@@ -230,19 +400,19 @@
       <div class="grid">
         <!-- Scatter: Activity vs Distress (real chart) -->
         <div class="vis-card" id="card-scatter">
-          <div id="scatter-vis"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="scatter-vis"><canvas width="802" height="427" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="caption">Proportion meeting activity guidelines vs. proportion with high psychological distress (by age group).</div>
         </div>
 
         <!-- Placeholder: radar / combined indicator -->
         <div class="vis-card" id="card-placeholder-5">
-          <div id="placeholder-5"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-5"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="placeholder-note">Placeholder: combined indicator (radar)</div>
         </div>
 
         <!-- Placeholder: heatmap or correlation -->
         <div class="vis-card" id="card-placeholder-6">
-          <div id="placeholder-6"></div>
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-6"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
           <div class="placeholder-note">Placeholder: heatmap (activity × distress)</div>
         </div>
 
@@ -424,5 +594,6 @@
 
   </script>
 
-</body>
-</html>
+
+
+</body></html>
