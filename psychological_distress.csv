@@ -1,0 +1,76 @@
+Sex,AgeGroup,DistressLevel,Percent
+Persons,18–24,Low distress level,51.6
+Persons,18–24,Moderate distress level,28.7
+Persons,18–24,High distress level,16.2
+Persons,18–24,Very high distress level,4.3
+Persons,25–34,Low distress level,59.4
+Persons,25–34,Moderate distress level,25.3
+Persons,25–34,High distress level,11.1
+Persons,25–34,Very high distress level,4.2
+Persons,35–44,Low distress level,63.0
+Persons,35–44,Moderate distress level,23.7
+Persons,35–44,High distress level,8.9
+Persons,35–44,Very high distress level,4.2
+Persons,45–54,Low distress level,63.4
+Persons,45–54,Moderate distress level,22.1
+Persons,45–54,High distress level,10.6
+Persons,45–54,Very high distress level,4.2
+Persons,55–64,Low distress level,65.4
+Persons,55–64,Moderate distress level,19.2
+Persons,55–64,High distress level,9.9
+Persons,55–64,Very high distress level,5.4
+Persons,65 years and over,Low distress level,70.7
+Persons,65 years and over,Moderate distress level,18.3
+Persons,65 years and over,High distress level,8.0
+Persons,65 years and over,Very high distress level,2.6
+Males,18–24,Low distress level,56.4
+Males,18–24,Moderate distress level,30.4
+Males,18–24,High distress level,10.3
+Males,18–24,Very high distress level,3.6
+Males,25–34,Low distress level,60.4
+Males,25–34,Moderate distress level,26.0
+Males,25–34,High distress level,9.5
+Males,25–34,Very high distress level,3.5
+Males,35–44,Low distress level,68.2
+Males,35–44,Moderate distress level,21.5
+Males,35–44,High distress level,6.8
+Males,35–44,Very high distress level,3.1
+Males,45–54,Low distress level,65.1
+Males,45–54,Moderate distress level,21.3
+Males,45–54,High distress level,8.5
+Males,45–54,Very high distress level,4.7
+Males,55–64,Low distress level,68.6
+Males,55–64,Moderate distress level,18.8
+Males,55–64,High distress level,7.5
+Males,55–64,Very high distress level,4.8
+Males,65 years and over,Low distress level,74.3
+Males,65 years and over,Moderate distress level,16.5
+Males,65 years and over,High distress level,6.4
+Males,65 years and over,Very high distress level,2.5
+Females,18–24,Low distress level,45.6
+Females,18–24,Moderate distress level,25.3
+Females,18–24,High distress level,22.4
+Females,18–24,Very high distress level,6.0
+Females,25–34,Low distress level,57.7
+Females,25–34,Moderate distress level,24.2
+Females,25–34,High distress level,12.6
+Females,25–34,Very high distress level,4.4
+Females,35–44,Low distress level,58.5
+Females,35–44,Moderate distress level,25.8
+Females,35–44,High distress level,10.3
+Females,35–44,Very high distress level,5.1
+Females,45–54,Low distress level,61.0
+Females,45–54,Moderate distress level,22.3
+Females,45–54,High distress level,12.0
+Females,45–54,Very high distress level,4.0
+Females,55–64,Low distress level,62.6
+Females,55–64,Moderate distress level,19.7
+Females,55–64,High distress level,12.1
+Females,55–64,Very high distress level,5.6
+Females,65 years and over,Low distress level,67.4
+Females,65 years and over,Moderate distress level,19.8
+Females,65 years and over,High distress level,9.2
+Females,65 years and over,Very high distress level,2.7
+
+
+source: https://www.abs.gov.au/statistics/health/health-conditions-and-risks/national-health-survey/latest-release 
