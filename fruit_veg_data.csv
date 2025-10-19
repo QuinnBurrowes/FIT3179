@@ -1,0 +1,22 @@
+AgeGroup,RecommendationType,MetPercent,LowCI,HighCI
+18–24,Fruit,36.6,32.0,41.2
+18–24,Vegetable,3.0,1.4,4.6
+18–24,Both,2.1,0.6,3.6
+25–34,Fruit,40.0,37.1,42.9
+25–34,Vegetable,6.2,5.0,7.4
+25–34,Both,3.9,2.9,4.9
+35–44,Fruit,41.0,38.1,43.9
+35–44,Vegetable,5.2,4.0,6.4
+35–44,Both,3.2,2.3,4.1
+45–54,Fruit,42.2,39.1,45.3
+45–54,Vegetable,6.2,5.0,7.4
+45–54,Both,3.9,2.9,4.9
+55–64,Fruit,44.6,41.9,47.3
+55–64,Vegetable,6.9,5.5,8.3
+55–64,Both,4.0,2.9,5.1
+65–74,Fruit,52.2,49.7,54.7
+65–74,Vegetable,7.8,6.2,9.4
+65–74,Both,5.8,4.4,7.2
+75 years and over,Fruit,59.0,55.2,62.8
+75 years and over,Vegetable,11.8,9.3,14.3
+75 years and over,Both,8.1,6.0,10.2
