@@ -1,309 +1,413 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Physical, Mental, and Lifestyle Health in Australia</title>
+  <meta charset="utf-8" />
+  <title>Australian Health Insights Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <style>
     body {
-      font-family: "Inter", sans-serif;
-      background-color: #fafafa;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      color: #1e293b;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #fafafa;
+      margin: 18px;
+      color: #111827;
+      line-height: 1.55;
     }
 
-    h1 {
-      font-size: 1.6em;
-      margin-top: 40px;
-      margin-bottom: 6px;
+    h1, h2 {
+      text-align: center;
       font-weight: 600;
     }
 
-    h2 {
-      font-size: 1.2em;
-      margin-top: 30px;
-      margin-bottom: 10px;
-      font-weight: 500;
-      color: #0f172a;
+    h1 { margin-bottom: 8px; }
+    h2 { margin-top: 40px; margin-bottom: 12px; }
+
+    p.lead {
+      text-align: center;
+      color: #374151;
+      max-width: 800px;
+      margin: 0 auto 24px auto;
     }
 
-    p.subtitle {
-      font-size: 0.95em;
-      color: #475569;
-      margin-top: 2px;
-      margin-bottom: 25px;
-    }
-
-    /* Chart containers */
-    .chart-container {
+    .top-row {
       display: flex;
+      gap: 48px; /* increased horizontal spacing */
       justify-content: center;
       align-items: flex-start;
       flex-wrap: wrap;
-      gap: 60px; /* space between charts */
-      margin: 20px auto;
-      max-width: 1300px;
+      margin-bottom: 18px;
     }
 
-    .chart {
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    .map-card, .chart-card, .chart {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.06);
       padding: 12px;
+      box-sizing: border-box;
     }
 
-    /* For single wide charts */
-    .chart-single {
+    .map-card { width: 680px; }
+    .chart-card {
+      width: calc(100% - 36px);
+      max-width: 1380px;
+      margin: 12px auto;
+    }
+
+    /* Center section 2 horizontally */
+    .section-2 {
       display: flex;
       justify-content: center;
-      margin: 30px 0;
+      align-items: flex-start;
+      gap: 420px; /* increased horizontal whitespace */
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto 20px auto;
     }
 
-    footer {
-      margin-top: 50px;
-      padding-bottom: 40px;
-      color: #64748b;
-      font-size: 0.85em;
+    /* Chart row for section 3 */
+    .chart-row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 420px; /* increased horizontal whitespace */
+      flex-wrap: wrap;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .chart { width: 420px; max-width: 100%; }
+
+    .caption, .text-block {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #374151;
+      text-align: center;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 1450px) {
+      .map-card { width: 48%; }
+      .section-2, .chart-row { gap: 180px; }
+    }
+
+    @media (max-width: 900px) {
+      .map-card { width: 100%; }
+      .chart { width: 100%; }
+      .section-2, .chart-row { gap: 80px; }
     }
   </style>
 </head>
 <body>
-  <h1>Physical, Mental, and Lifestyle Health in Australia</h1>
-  <p class="subtitle">
-    Visual exploration of national health indicators across physical activity, mental wellbeing, and lifestyle factors.<br>
-    Data sources: Australian Bureau of Statistics (National Health Survey 2022) and AIHW.
-  </p>
+  <header>
+    <h1>Physical, Mental, and Lifestyle Health in Australia</h1>
+    <p class="lead">
+      Visual exploration of national health indicators across physical activity, mental wellbeing, and lifestyle factors.
+      <br>
+      Data sources: Australian Bureau of Statistics (National Health Survey 2022) and AIHW.
+    </p>
+  </header>
 
-  <!-- SECTION 1: National and State Health Overview -->
+  <!-- SECTION 1 -->
   <h2>National and State Health Overview</h2>
-  <div class="chart-container">
-    <div id="map-mental" class="chart"></div>
-    <div id="map-physical" class="chart"></div>
+  <div class="top-row">
+    <div class="map-card">
+      <div id="map1"></div>
+      <div class="caption">Mental health conditions prevalence by state (ABS 2022)</div>
+    </div>
+
+    <div class="map-card">
+      <div id="map2"></div>
+      <div class="caption">Physical activity guideline adherence by state (ABS 2022)</div>
+    </div>
   </div>
 
-  <div class="chart-single">
-    <div id="linechart" class="chart"></div>
+  <div class="text-block">
+    The maps highlight regional disparities in physical and mental health across Australia. 
+    States with higher physical activity rates tend to report lower mental health concerns, indicating a possible association.
   </div>
 
-  <!-- SECTION 2: Lifestyle and Nutrition Patterns -->
+  <div class="chart-card">
+    <div id="deaths"></div>
+    <div class="caption">Leading causes of death across Australia, showing long-term trends in key health outcomes.</div>
+  </div>
+
+  <!-- SECTION 2 -->
   <h2>Lifestyle and Nutrition Patterns</h2>
-  <div class="chart-container">
+  <div class="section-2">
     <div id="heatmap" class="chart"></div>
     <div id="donut" class="chart"></div>
   </div>
 
-  <!-- SECTION 3: Psychological Wellbeing and Physical Activity -->
+  <div class="text-block">
+    Diet and physical activity play central roles in population health.  
+    Younger age groups are less likely to meet fruit and vegetable recommendations, while activity levels vary strongly with age.
+  </div>
+
+  <!-- SECTION 3 -->
   <h2>Psychological Wellbeing and Physical Activity</h2>
-  <div class="chart-container">
+  <div class="chart-row">
     <div id="scatter" class="chart"></div>
     <div id="stacked" class="chart"></div>
   </div>
 
-  <footer>
-    Physical activity is linked to reduced psychological distress, but the correlation differs by age and gender.
+  <div class="text-block">
+    Physical activity is linked to reduced psychological distress, but this connection differs by age and gender.  
     These relationships can guide targeted wellbeing and health promotion strategies.
-  </footer>
+  </div>
 
   <script>
-    // === Inline Vega-Lite specifications ===
+    const embedOpts = { actions: false, renderer: "canvas" };
 
-    const mapMental = {
+    /* ---------------- SECTION 1 MAPS ---------------- */
+    const specMap1 = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Mental health condition prevalence by state (ABS 2022)",
-      "width": 320,
-      "height": 240,
-      "projection": {"type": "mercator"},
-      "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/aus_states.geojson", "format": {"type": "geojson"}},
-      "transform": [{"calculate": "random() * 10 + 10", "as": "Prevalence"}],
-      "mark": {"type": "geoshape", "stroke": "#fff"},
-      "encoding": {
-        "color": {"field": "Prevalence", "type": "quantitative", "scale": {"scheme": "blues"}},
-        "tooltip": [{"field": "properties.STATE_NAME", "title": "State"}, {"field": "Prevalence", "title": "% Mental Health"}]
-      },
-      "config": {"view": {"stroke": "transparent"}}
+      "width": 680, "height": 420,
+      "projection": { "type": "mercator", "center": [134, -28], "scale": 600 },
+      "layer": [
+        { "data": { "graticule": { "step": [30, 30] } }, "mark": { "type": "geoshape", "stroke": "#ddd", "strokeWidth": 0.4 } },
+        {
+          "data": { "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json", "format": { "type": "json", "property": "features" } },
+          "transform": [
+            {
+              "lookup": "properties.STATE_NAME",
+              "from": {
+                "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/mental_state_real.csv" },
+                "key": "STATE_NAME",
+                "fields": ["value"]
+              }
+            }
+          ],
+          "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 1 },
+          "encoding": {
+            "color": { "field": "value", "type": "quantitative", "title": "% adults (mental)", "scale": { "scheme": "blues" } },
+            "tooltip": [
+              { "field": "properties.STATE_NAME", "title": "State" },
+              { "field": "value", "title": "% adults (mental)" }
+            ]
+          }
+        }
+      ],
+      "config": { "legend": { "orient": "left", "offset": 10 }, "view": { "stroke": "transparent" } }
     };
 
-    const mapPhysical = {
+    const specMap2 = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Physical activity adherence by state (ABS 2022)",
-      "width": 320,
-      "height": 240,
-      "projection": {"type": "mercator"},
-      "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/aus_states.geojson", "format": {"type": "geojson"}},
-      "transform": [{"calculate": "random() * 20 + 60", "as": "Adherence"}],
-      "mark": {"type": "geoshape", "stroke": "#fff"},
-      "encoding": {
-        "color": {"field": "Adherence", "type": "quantitative", "scale": {"scheme": "greens"}},
-        "tooltip": [{"field": "properties.STATE_NAME", "title": "State"}, {"field": "Adherence", "title": "% Meeting Guidelines"}]
-      },
-      "config": {"view": {"stroke": "transparent"}}
+      "width": 680, "height": 420,
+      "projection": { "type": "mercator", "center": [134, -28], "scale": 600 },
+      "layer": [
+        { "data": { "graticule": { "step": [30, 30] } }, "mark": { "type": "geoshape", "stroke": "#ddd", "strokeWidth": 0.4 } },
+        {
+          "data": { "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json", "format": { "type": "json", "property": "features" } },
+          "transform": [
+            {
+              "lookup": "properties.STATE_NAME",
+              "from": {
+                "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_state.csv" },
+                "key": "STATE_NAME",
+                "fields": ["value"]
+              }
+            }
+          ],
+          "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 1 },
+          "encoding": {
+            "color": { "field": "value", "type": "quantitative", "title": "% adults (physical)", "scale": { "scheme": "greens" } },
+            "tooltip": [
+              { "field": "properties.STATE_NAME", "title": "State" },
+              { "field": "value", "title": "% adults (physical)" }
+            ]
+          }
+        }
+      ],
+      "config": { "legend": { "orient": "right" }, "view": { "stroke": "transparent" } }
     };
 
-    const linechart = {
+    /* ---------------- SECTION 2 & 3 (from your existing specs) ---------------- */
+    const specDeaths = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Leading causes of death across Australia, showing long-term trends in key health outcomes.",
-      "width": 650,
-      "height": 260,
-      "data": {"url": "https://raw.githubusercontent.com/vega/vega-datasets/main/data/stocks.csv"},
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes.csv" },
       "mark": "line",
       "encoding": {
-        "x": {"field": "date", "type": "temporal", "title": "Year"},
-        "y": {"field": "price", "type": "quantitative", "title": "Rate"},
-        "color": {"field": "symbol", "type": "nominal"}
-      }
-    };
-
-    const heatmap = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Physical activity by fruit/vegetable consumption (ABS 2022)",
-      "width": 320,
-      "height": 240,
-      "data": {"values": [
-        {"FruitServes": 1, "VegServes": 1, "Percent": 12},
-        {"FruitServes": 2, "VegServes": 3, "Percent": 25},
-        {"FruitServes": 3, "VegServes": 5, "Percent": 45},
-        {"FruitServes": 4, "VegServes": 6, "Percent": 60}
-      ]},
-      "mark": "rect",
-      "encoding": {
-        "x": {"field": "FruitServes", "type": "ordinal"},
-        "y": {"field": "VegServes", "type": "ordinal"},
-        "color": {"field": "Percent", "type": "quantitative", "scale": {"scheme": "greens"}},
-        "tooltip": [{"field": "Percent", "type": "quantitative", "title": "% meeting guidelines"}]
-      }
-    };
-
-    const donut = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Weekly fruit & veg intake by age group (ABS 2022)",
-      "data": {"values": [
-        {"Category": "18–24", "Percent": 20},
-        {"Category": "25–34", "Percent": 30},
-        {"Category": "35–44", "Percent": 25},
-        {"Category": "45+", "Percent": 25}
-      ]},
-      "mark": {"type": "arc", "innerRadius": 60},
-      "encoding": {
-        "theta": {"field": "Percent", "type": "quantitative"},
-        "color": {"field": "Category", "type": "nominal", "scale": {"scheme": "tableau10"}},
-        "tooltip": [{"field": "Category"}, {"field": "Percent", "title": "%"}]
+        "x": { "field": "Year", "type": "temporal" },
+        "y": { "field": "Deaths", "type": "quantitative" },
+        "color": { "field": "Cause", "type": "nominal" }
       },
-      "view": {"stroke": null}
+      "width": 1000, "height": 380
     };
 
-    const scatter = {
+    const specHeatmap = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "K10 Distress vs Physical Activity by Sex",
-      "width": 320,
-      "height": 240,
-      "data": {"values": [
-        {"K10": 22, "Activity": 60, "Sex": "Male"},
-        {"K10": 28, "Activity": 40, "Sex": "Female"},
-        {"K10": 18, "Activity": 70, "Sex": "Male"},
-        {"K10": 25, "Activity": 50, "Sex": "Female"}
-      ]},
-      "mark": {"type": "circle", "opacity": 0.8},
-      "encoding": {
-        "x": {"field": "Activity", "type": "quantitative", "title": "Physical Activity (mins/day)"},
-        "y": {"field": "K10", "type": "quantitative", "title": "K10 Distress Score"},
-        "color": {"field": "Sex", "type": "nominal"},
-        "tooltip": [{"field": "Sex"}, {"field": "Activity"}, {"field": "K10"}]
-      }
-    };
-
-    const stacked = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "description": "Distribution of Distress Level by Age Group (percent) — Males vs Females",
+      "title": "Proportion Meeting Dietary Recommendations by Age Group (2022)",
       "data": {
-        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/psychological_distress.csv",
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/fruit_veg_data.csv",
         "format": {"type": "csv"}
       },
-      "width": 320,
-      "height": 260,
-      "title": "Distribution of Distress Level by Age Group (percent) — Males vs Females",
+      "width": 400,
+      "height": 240,
+      "mark": "rect",
+      "encoding": {
+        "x": {
+          "field": "AgeGroup",
+          "type": "ordinal",
+          "sort": ["18-24","25-34","35-44","45-54","55-64","65-74","75 years and over"],
+          "axis": {"title": "Age Group"}
+        },
+        "y": {
+          "field": "RecommendationType",
+          "type": "nominal",
+          "sort": ["Fruit", "Vegetable", "Both"],
+          "axis": {"title": "Recommendation Type"}
+        },
+        "color": {
+          "field": "MetPercent",
+          "type": "quantitative",
+          "title": "Meeting recommendation (%)",
+          "scale": {"scheme": "yellowgreenblue"}
+        },
+        "tooltip": [
+          {"field": "AgeGroup", "type": "nominal"},
+          {"field": "RecommendationType", "type": "nominal"},
+          {"field": "MetPercent", "type": "quantitative", "title": "Percent (%)"}
+        ]
+      },
+      "config": {"view": {"stroke": "transparent"}}
+    };
+
+    const specDonut = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "description": "Interactive donut chart showing weekly physical activity distribution by age group.",
+      "title": "Weekly Physical Activity Levels by Age Group (2022)",
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/physical_activity_final.csv",
+        "format": {"type": "csv"}
+      },
+      "params": [
+        {
+          "name": "ageSelect",
+          "value": "15-17",
+          "bind": {
+            "input": "select",
+            "options": [
+              "15-17",
+              "18-24",
+              "25-34",
+              "35-44",
+              "45-54",
+              "55-64",
+              "65+"
+            ],
+            "name": "Select Age Group: "
+          }
+        }
+      ],
       "transform": [
-        {"filter": {"field": "Sex", "oneOf": ["Males", "Females"]}},
-        {"calculate": "toNumber(datum.Percent)", "as": "PercentNum"},
+        {"filter": "datum.Age_Group == ageSelect"}
+      ],
+      "width": 360,
+      "height": 320,
+      "mark": {"type": "arc", "innerRadius": 70},
+      "encoding": {
+        "theta": {"field": "Proportion", "type": "quantitative"},
+        "color": {
+          "field": "Minutes_Category",
+          "type": "nominal",
+          "scale": {
+            "domain": ["0 minutes", "1-149 minutes", "150-299 minutes", "300+ minutes"],
+            "range": ["#d73027", "#fc8d59", "#fee090", "#1a9850"]
+          },
+          "legend": {"title": "Minutes per Week"}
+        },
+        "order": {
+          "field": "Minutes_Category",
+          "type": "nominal",
+          "sort": ["0 minutes", "1-149 minutes", "150-299 minutes", "300+ minutes"]
+        },
+        "tooltip": [
+          {"field": "Age_Group", "title": "Age Group"},
+          {"field": "Minutes_Category", "title": "Minutes per Week"},
+          {"field": "Proportion", "title": "Proportion (%)"}
+        ]
+      },
+      "view": {"stroke": null},
+      "config": {
+        "legend": {"orient": "right"},
+        "axis": {"domain": false, "grid": false, "labels": false, "ticks": false}
+      }
+    };
+
+
+    const specScatter = {
+      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 680,
+      "height": 380,
+      "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
+      "mark":{"type":"point","filled":true,"size":140},
+      "encoding":{
+        "x":{"field":"Activity_Met","type":"quantitative","title":"% meeting activity guidelines"},
+        "y":{"field":"Distress_High","type":"quantitative","title":"% high/very high distress"},
+        "color":{"field":"Age_Group","type":"nominal"},
+        "tooltip":[
+          {"field":"Age_Group"},{"field":"Activity_Met","title":"% Active"},{"field":"Distress_High","title":"% High Distress"}
+        ]
+      },
+      "config":{"view":{"stroke":"transparent"}}
+    };
+
+    const specStacked = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "description": "Stacked distress levels by age/sex",
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/psychological_distress.csv" },
+      "transform": [
+        { "filter": { "field": "Sex", "oneOf": ["Males", "Females"] } },
+        { "calculate": "toNumber(datum.Percent)", "as": "PercentNum" },
         {
           "calculate": "datum.DistressLevel == 'Low distress level' ? 1 : datum.DistressLevel == 'Moderate distress level' ? 2 : datum.DistressLevel == 'High distress level' ? 3 : 4",
           "as": "DistressRank"
         }
       ],
       "facet": {
-        "column": {
-          "field": "Sex",
-          "type": "nominal",
-          "sort": ["Males", "Females"],
-          "header": {"labelAngle": 0, "title": null}
-        }
+        "row": { "field": "Sex", "type": "nominal", "sort": ["Males", "Females"], "header": { "title": null } }
       },
       "spec": {
-        "mark": {"type": "bar", "cornerRadiusEnd": 2},
+        "mark": { "type": "bar", "cornerRadiusEnd": 2 },
         "encoding": {
           "y": {
             "field": "AgeGroup",
             "type": "ordinal",
-            "sort": {
-              "domain": [
-                "18–24",
-                "25–34",
-                "35–44",
-                "45–54",
-                "55–64",
-                "65 years and over"
-              ]
-            },
-            "axis": {"title": null}
+            "sort": ["18–24", "25–34", "35–44", "45–54", "55–64", "65 years and over"],
+            "axis": { "title": null }
           },
-          "x": {
-            "field": "PercentNum",
-            "type": "quantitative",
-            "stack": "zero",
-            "axis": {"title": "Percent (%)"}
-          },
+          "x": { "field": "PercentNum", "type": "quantitative", "stack": "zero", "axis": { "title": "Percent (%)" } },
           "color": {
-            "field": "DistressLevel",
-            "type": "nominal",
+            "field": "DistressLevel", "type": "nominal",
             "scale": {
-              "domain": [
-                "Low distress level",
-                "Moderate distress level",
-                "High distress level",
-                "Very high distress level"
-              ],
+              "domain": ["Low distress level", "Moderate distress level", "High distress level", "Very high distress level"],
               "range": ["#4daf4a", "#377eb8", "#ff7f00", "#e41a1c"]
             },
-            "legend": {"title": "Distress level", "orient": "right"}
+            "legend": { "title": "Distress level", "orient": "right" }
           },
-          "order": {
-            "field": "DistressRank",
-            "type": "quantitative",
-            "sort": "ascending"
-          },
+          "order": { "field": "DistressRank", "type": "quantitative", "sort": "ascending" },
           "tooltip": [
-            {"field": "Sex", "type": "nominal"},
-            {"field": "AgeGroup", "type": "nominal"},
-            {"field": "DistressLevel", "type": "nominal"},
-            {"field": "PercentNum", "type": "quantitative", "title": "Percent"}
+            { "field": "Sex" }, { "field": "AgeGroup" }, { "field": "DistressLevel" }, { "field": "PercentNum", "title": "Percent" }
           ]
         }
       },
-      "resolve": {"legend": {"color": "shared"}}
+      "resolve": { "legend": { "color": "shared" } },
+      "width": 320, "height": 260
     };
 
-    // === Embed visualisations ===
-    vegaEmbed("#map-mental", mapMental, {actions: false});
-    vegaEmbed("#map-physical", mapPhysical, {actions: false});
-    vegaEmbed("#linechart", linechart, {actions: false});
-    vegaEmbed("#heatmap", heatmap, {actions: false});
-    vegaEmbed("#donut", donut, {actions: false});
-    vegaEmbed("#scatter", scatter, {actions: false});
-    vegaEmbed("#stacked", stacked, {actions: false});
+    /* Embed all specs */
+    vegaEmbed("#map1", specMap1, embedOpts);
+    vegaEmbed("#map2", specMap2, embedOpts);
+    vegaEmbed("#deaths", specDeaths, embedOpts);
+    vegaEmbed("#heatmap", specHeatmap, embedOpts);
+    vegaEmbed("#donut", specDonut, embedOpts);
+    vegaEmbed("#scatter", specScatter, embedOpts);
+    vegaEmbed("#stacked", specStacked, embedOpts);
   </script>
 </body>
 </html>
