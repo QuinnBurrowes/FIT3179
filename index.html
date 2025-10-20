@@ -60,11 +60,10 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 420px; /* increased horizontal whitespace */
+      gap: 420px; /* keeps large horizontal spacing */
       flex-wrap: wrap;
-      width: 100%;
-      max-width: 1380px;
-      margin: 0 auto 20px auto;
+      width: fit-content; /* <<< key change: only as wide as the charts */
+      margin: 0 auto 20px auto; /* <<< centers the group */
     }
 
     /* Chart row for section 3 */
