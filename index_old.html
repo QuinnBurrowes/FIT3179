@@ -1,206 +1,597 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head><style id="vega-tooltip-style">#vg-tooltip-element {
+  visibility: hidden;
+  padding: 8px;
+  position: fixed;
+  z-index: 1000;
+  font-family: sans-serif;
+  font-size: 11px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  /* The default theme is the light theme. */
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #d9d9d9;
+  color: black;
+}
+#vg-tooltip-element.visible {
+  visibility: visible;
+}
+#vg-tooltip-element h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+#vg-tooltip-element table {
+  border-spacing: 0;
+}
+#vg-tooltip-element table tr {
+  border: none;
+}
+#vg-tooltip-element table tr td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+#vg-tooltip-element table tr td.key {
+  color: #808080;
+  max-width: 150px;
+  text-align: right;
+  padding-right: 4px;
+}
+#vg-tooltip-element table tr td.value {
+  display: block;
+  max-width: 300px;
+  max-height: 7em;
+  text-align: left;
+}
+#vg-tooltip-element.dark-theme {
+  background-color: rgba(32, 32, 32, 0.9);
+  border: 1px solid #f5f5f5;
+  color: white;
+}
+#vg-tooltip-element.dark-theme td.key {
+  color: #bfbfbf;
+}
+</style>
   <meta charset="utf-8">
-  <title>Health Risks and Causes of Death in Australia</title>
+  <title>Health Risks and Outcomes — Australia</title>
+
+  <!-- Vega -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <!-- Inter font for consistent typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    :root{
+      --max-width: 1100px;
+      --card-bg: #ffffff;
+      --muted: #6b7280;
+      --accent: #2b6cb0;
+      --gap: 24px;
+    }
+
+    html,body { height:100%; }
     body {
-      font-family: Arial, sans-serif;
-      margin: 30px;
-      background: #f9f9f9;
+      margin: 24px;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f5f7fb;
+      color: #111827;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    header {
+      max-width: var(--max-width);
+      margin: 0 auto 18px auto;
       text-align: center;
     }
-
     h1 {
-      margin-bottom: 40px;
+      font-size: 28px;
+      margin: 8px 0 4px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    p.lead {
+      margin: 0 auto;
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 15px;
     }
 
-    .vis-container {
+    main {
+      max-width: var(--max-width);
+      margin: 28px auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    /* Section layout */
+    section.section {
+      background: transparent;
+      padding: 0;
+    }
+    section .section-header {
+      display:flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 12px;
+      justify-content: space-between;
+    }
+    section h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    section p.intro {
+      color: var(--muted);
+      margin: 8px 0 18px 0;
+      max-width: 920px;
+    }
+
+    /* Grid to hold charts / placeholders (2 columns on wide screens) */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap);
+      align-items: start;
+    }
+
+    @media (min-width: 960px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Card wrapper for charts and placeholders */
+    .vis-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(13, 27, 52, 0.06);
+      padding: 18px;
+      min-height: 360px;               /* ensures consistent alignment */
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin: 40px auto;
+    }
+
+    /* Ensure the Vega embed itself is centered inside card */
+    .vis-card .vega-embed, .vis-card > div {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .placeholder-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Small caption for each card */
+    .caption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
       text-align: center;
     }
 
     footer {
-      margin-top: 60px;
-      font-size: 14px;
-      color: #555;
+      max-width: var(--max-width);
+      margin: 36px auto 12px auto;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
     }
   </style>
-</head>
+<style id="vega-embed-style">.vega-embed {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+}
+.vega-embed.has-actions {
+  padding-right: 38px;
+}
+.vega-embed details:not([open]) > :not(summary) {
+  display: none !important;
+}
+.vega-embed summary {
+  list-style: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 6px;
+  z-index: 1000;
+  background: white;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  color: #1b1e23;
+  border: 1px solid #aaa;
+  border-radius: 999px;
+  opacity: 0.2;
+  transition: opacity 0.4s ease-in;
+  cursor: pointer;
+  line-height: 0px;
+}
+.vega-embed summary::-webkit-details-marker {
+  display: none;
+}
+.vega-embed summary:active {
+  box-shadow: #aaa 0px 0px 0px 1px inset;
+}
+.vega-embed summary svg {
+  width: 14px;
+  height: 14px;
+}
+.vega-embed details[open] summary {
+  opacity: 0.7;
+}
+.vega-embed:hover summary, .vega-embed:focus-within summary {
+  opacity: 1 !important;
+  transition: opacity 0.2s ease;
+}
+.vega-embed .vega-actions {
+  position: absolute;
+  z-index: 1001;
+  top: 35px;
+  right: -9px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid #d9d9d9;
+  background: white;
+  animation-duration: 0.15s;
+  animation-name: scale-in;
+  animation-timing-function: cubic-bezier(0.2, 0, 0.13, 1.5);
+  text-align: left;
+}
+.vega-embed .vega-actions a {
+  padding: 8px 16px;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #434a56;
+  text-decoration: none;
+}
+.vega-embed .vega-actions a:hover, .vega-embed .vega-actions a:focus {
+  background-color: #f7f7f9;
+  color: black;
+}
+.vega-embed .vega-actions::before, .vega-embed .vega-actions::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+}
+.vega-embed .vega-actions::before {
+  left: auto;
+  right: 14px;
+  top: -16px;
+  border: 8px solid rgba(0, 0, 0, 0);
+  border-bottom-color: #d9d9d9;
+}
+.vega-embed .vega-actions::after {
+  left: auto;
+  right: 15px;
+  top: -14px;
+  border: 7px solid rgba(0, 0, 0, 0);
+  border-bottom-color: #fff;
+}
+.vega-embed .chart-wrapper.fit-x {
+  width: 100%;
+}
+.vega-embed .chart-wrapper.fit-y {
+  height: 100%;
+}
 
+.vega-embed-wrapper {
+  max-width: 100%;
+  overflow: auto;
+  padding-right: 14px;
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+</style></head>
 <body>
 
-  <h1>Overweight, Obesity & Health Outcomes in Australia</h1>
-  <p>
-    This visualisation explores the relationship between obesity prevalence and major causes of death in Australia.
-    Data is sourced from the Australian Bureau of Statistics (2022) and the Australian Institute of Health and Welfare (AIHW).
-  </p>
+  <header>
+    <h1>Physical, Mental, and Combined Health Patterns in Australia</h1>
+    <p class="lead">
+      Visual exploration of physical and mental health indicators across age groups and states.
+      Data sources: Australian Bureau of Statistics (National Health Survey 2022) and AIHW. 
+    </p>
+  </header>
 
-  <!-- Adult Overweight Map -->
-  <h2>Adult Overweight/Obesity Prevalence by State (2022)</h2>
-  <div class="vis-container" id="adult-vis"></div>
+  <main>
 
-  <!-- Child Overweight Chart -->
-  <h2>Prevalence of Overweight or Obese Children (2–17 years)</h2>
-  <div class="vis-container" id="child-vis"></div>
+    <!-- PHYSICAL SECTION -->
+    <section class="section" id="physical-section">
+      <div class="section-header">
+        <h2>Physical</h2>
+        <div style="color:var(--muted); font-size:13px">Charts: activity, obesity, etc.</div>
+      </div>
+      <p class="intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae mi sit amet nisi efficitur vulputate. Praesent vehicula arcu vitae sem suscipit, nec vulputate lectus faucibus.</p>
 
-  <!-- Death Causes Over Time -->
-  <h2>Trends in Major Causes of Death (2014–2023)</h2>
-  <div class="vis-container" id="death-vis"></div>
+      <div class="grid">
+        <!-- Adult Overweight Map (real chart) -->
+        <div class="vis-card" id="card-adult">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="adult-vis"><canvas width="815" height="430" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="caption">Adult overweight/obesity prevalence by state (2022). Hover a state for details.</div>
+        </div>
 
-  <script type="text/javascript">
-    // Adult Overweight Map
-    var adultSpec = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "description": "Obesity prevalence by Australian state",
-      "width": 600,
-      "height": 500,
-      "projection": {"type": "mercator", "center": [134, -28], "scale": 600},
-      "layer": [
-        {"data": {"graticule": {"step": [30, 30]}},
-         "mark": {"type": "geoshape", "stroke": "#3b3b3b", "strokeWidth": 0.5}},
-        {
-          "data": {
-            "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json",
-            "format": {"type": "json", "property": "features"}
-          },
-          "transform": [{
-            "lookup": "properties.STATE_NAME",
-            "from": {
-              "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/health_risks_real.csv"},
-              "key": "STATE_NAME",
-              "fields": ["value"]
-            }
-          }],
-          "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 1},
-          "encoding": {
-            "color": {
-              "field": "value",
-              "type": "quantitative",
-              "title": "% overweight adults",
-              "scale": {"scheme": "reds"}
-            },
-            "tooltip": [
-              {"field": "properties.STATE_NAME", "title": "State"},
-              {"field": "value", "title": "% overweight adults"}
-            ]
-          }
-        }
-      ],
-      "config": {"view": {"stroke": "transparent"}, "background": "#7fcdff"}
-    };
+        <!-- Placeholder chart for alignment (real chart exists at left) -->
+        <div class="vis-card" id="card-placeholder-1">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-1"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="placeholder-note">Placeholder chart — other physical indicator</div>
+        </div>
 
-    // Child Overweight Chart (interactive + average line)
-    var childSpec = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": {
-        "text": "Prevalence of Overweight or Obese Children in Australia (2–17 years)",
-        "fontSize": 18,
-        "fontWeight": "bold"
-      },
-      "data": {
-        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/child_overweight.csv"
-      },
-      "transform": [
-        {"filter": "datum.Category == 'Overweight or obese'"},
-        {"filter": "genderSelect == 'All' ? true : datum.Gender == genderSelect"}
-      ],
-      "params": [
-        {
-          "name": "genderSelect",
-          "value": "Boys",
-          "bind": {
-            "input": "select",
-            "options": ["All", "Boys", "Girls"],
-            "labels": ["All", "Boys only", "Girls only"],
-            "name": "Select Gender: "
-          }
-        }
-      ],
-      "width": 600,
-      "height": 350,
-      "layer": [
-        {
-          "mark": "bar",
-          "encoding": {
-            "x": {
-              "field": "AgeGroup",
-              "type": "ordinal",
-              "title": "Age Group",
-              "sort": ["2-4", "5-7", "8-11", "12-15", "16-17"]
-            },
-            "y": {
-              "field": "Percent",
-              "type": "quantitative",
-              "title": "Prevalence (%)",
-              "scale": {"domain": [0, 40]}
-            },
-            "color": {
-              "field": "Gender",
-              "type": "nominal",
-              "title": "Gender",
-              "scale": {"domain": ["Boys", "Girls"], "range": ["#1f77b4", "#ff7f0e"]}
-            },
-            "tooltip": [
-              {"field": "AgeGroup", "type": "ordinal"},
-              {"field": "Gender", "type": "nominal"},
-              {"field": "Percent", "type": "quantitative", "format": ".1f"}
-            ]
-          }
-        },
-        {
-          "mark": {"type": "rule", "color": "red", "strokeDash": [4, 2]},
-          "encoding": {"y": {"datum": 26.4}}
-        },
-        {
-          "mark": {"type": "text", "color": "red", "dx": 5, "dy": -5, "align": "left"},
-          "encoding": {
-            "y": {"datum": 26.4},
-            "x": {"value": 0},
-            "text": {"value": "All children (2–17) = 26.4%"}
-          }
-        }
-      ]
-    };
+        <!-- Child Overweight (real chart) -->
+        <div class="vis-card" id="card-child">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="child-vis"><canvas width="807" height="848" class="marks"></canvas><form class="vega-bindings"><div class="vega-bind"><label><span class="vega-bind-name">Select gender: </span><select name="genderSelect"><option value="All" selected="true">All</option><option value="Boys">Boys</option><option value="Girls">Girls</option></select></label></div></form></div>
+          <div class="caption">Child overweight prevalence by age &amp; gender (interactive).</div>
+        </div>
 
-    // Death Causes Over Time
-    var deathSpec = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 600,
-      "height": 400,
-      "data": {
-        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes_old.csv"
-      },
-      "mark": {"type": "line", "point": true, "strokeWidth": 3},
-      "encoding": {
-        "x": {"field": "Year", "type": "temporal", "axis": {"title": "Year"}},
-        "y": {"field": "Deaths", "type": "quantitative", "axis": {"title": "Number of Deaths"}},
-        "color": {"field": "Cause", "type": "nominal", "legend": {"title": "Cause of Death"}},
-        "tooltip": [{"field": "Year"}, {"field": "Cause"}, {"field": "Deaths"}]
-      },
-      "config": {
-        "view": {"stroke": "transparent"},
-        "axis": {"labelFontSize": 12, "titleFontSize": 14},
-        "legend": {"labelFontSize": 12, "titleFontSize": 13}
-      }
-    };
+        <!-- Placeholder chart -->
+        <div class="vis-card" id="card-placeholder-2">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-2"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="placeholder-note">Placeholder chart — physical trends</div>
+        </div>
+      </div>
+    </section>
 
-    // Embed charts
-    vegaEmbed('#adult-vis', adultSpec);
-    vegaEmbed('#child-vis', childSpec);
-    vegaEmbed('#death-vis', deathSpec);
-  </script>
+    <!-- MENTAL SECTION -->
+    <section class="section" id="mental-section">
+      <div class="section-header">
+        <h2>Mental</h2>
+        <div style="color:var(--muted); font-size:13px">Charts: distress, suicide trends, services</div>
+      </div>
+      <p class="intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vulputate ex quis lectus hendrerit, at dapibus nibh fringilla.</p>
+
+      <div class="grid">
+        <!-- Placeholder: Psychological Distress (we'll render a small stacked bar placeholder or text) -->
+        <div class="vis-card" id="card-psych">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="psych-placeholder"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="caption">Psychological distress by age and sex (placeholder).</div>
+        </div>
+
+        <!-- Deaths time-series (real chart: includes suicide, dementia, etc.) -->
+        <div class="vis-card" id="card-death">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="death-vis"><canvas width="934" height="427" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="caption">Time trends for major causes of death (2014–2023).</div>
+        </div>
+
+        <!-- Placeholder: mental services map/chart -->
+        <div class="vis-card" id="card-placeholder-3">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-3"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="placeholder-note">Placeholder: mental health services availability</div>
+        </div>
+
+        <!-- Placeholder: suicide breakdown -->
+        <div class="vis-card" id="card-placeholder-4">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-4"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="placeholder-note">Placeholder: suicide by age/sex</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMBINED SECTION -->
+    <section class="section" id="combined-section">
+      <div class="section-header">
+        <h2>Combined (Physical × Mental)</h2>
+        <div style="color:var(--muted); font-size:13px">Comparative analyses and correlation views</div>
+      </div>
+      <p class="intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Sed vitae fermentum enim.</p>
+
+      <div class="grid">
+        <!-- Scatter: Activity vs Distress (real chart) -->
+        <div class="vis-card" id="card-scatter">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="scatter-vis"><canvas width="802" height="427" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="caption">Proportion meeting activity guidelines vs. proportion with high psychological distress (by age group).</div>
+        </div>
+
+        <!-- Placeholder: radar / combined indicator -->
+        <div class="vis-card" id="card-placeholder-5">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-5"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="placeholder-note">Placeholder</div>
+        </div>
+
+        <!-- Placeholder: heatmap or correlation -->
+        <div class="vis-card" id="card-placeholder-6">
+          <div style="cursor: default;" aria-label="Vega visualization" aria-roledescription="visualization" role="graphics-document" class="vega-embed" id="placeholder-6"><canvas width="650" height="350" class="marks"></canvas><form class="vega-bindings"></form></div>
+          <div class="placeholder-note">Placeholder</div>
+        </div>
+
+        <!-- Placeholder: narrative / annotation card -->
+        <div class="vis-card" id="card-narrative">
+          <div style="max-width:600px; text-align:left; color:var(--muted); font-size:14px; line-height:1.5;">
+            <strong>Notes</strong>
+            <p style="margin:8px 0 0;">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <footer>
-    <p>Created by Quinn Burrowes | FIT3179 Data Visualisation 2 | Monash University, Semester 2, 2025</p>
-    <p>Data Sources: Australian Bureau of Statistics (2022); Australian Institute of Health and Welfare (2024)</p>
+    <div style="margin-top:6px">Data sources: Australian Bureau of Statistics (National Health Survey 2022); AIHW.</div>
   </footer>
 
-</body>
-</html>
+  <!-- ==== JavaScript: Vega specs and embeds ==== -->
+  <script>
+  /*****************************************************************
+   * Utility: placeholder Vega-Lite spec that renders a visible card
+   * Use this to create consistent placeholder charts that "take up space"
+   *****************************************************************/
+  function placeholderSpec(message, width=680, height=340){
+    return {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "width": width,
+      "height": height,
+      "data": {"values":[{"text":message}]},
+      "mark": {"type":"text", "dy":-6, "fontSize":20, "color":"#9ca3af"},
+      "encoding": {
+        "text":{"field":"text","type":"nominal"}
+      },
+      "config": {"view":{"stroke":"transparent"}, "background": null}
+    };
+  }
+
+  /* --------------------------
+     Real charts (4): adult map, child bar, death lines, scatter
+     All specs purposely have no title text inside spec (titles are in HTML).
+     -------------------------- */
+
+  // Adult Overweight Map spec (choropleth)
+  var adultSpec = {
+    "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 680,
+    "height": 420,
+    "projection": {"type":"mercator", "center":[134,-28], "scale":600},
+    "layer": [
+      {"data":{"graticule":{"step":[30,30]}}, "mark":{"type":"geoshape","stroke":"#ddd","strokeWidth":0.4}},
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json",
+          "format": {"type":"json", "property":"features"}
+        },
+        "transform":[
+          {
+            "lookup":"properties.STATE_NAME",
+            "from":{
+              "data": {"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/health_risks_real.csv"},
+              "key":"STATE_NAME",
+              "fields":["value"]
+            }
+          }
+        ],
+        "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
+        "encoding":{
+          "color":{"field":"value","type":"quantitative","title":"% overweight adults","scale":{"scheme":"reds"}},
+          "tooltip":[
+            {"field":"properties.STATE_NAME","title":"State"},
+            {"field":"value","title":"% overweight adults"}
+          ]
+        }
+      }
+    ],
+    "config": {"view":{"stroke":"transparent"}}
+  };
+
+  // Child overweight bar chart (interactive param + national average)
+  var childSpec = {
+    "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/child_overweight.csv"},
+    "transform": [
+      {"filter":"datum.Category == 'Overweight or obese'"},
+      {"filter":"genderSelect == 'All' ? true : datum.Gender == genderSelect"}
+    ],
+    "params":[
+      {
+        "name":"genderSelect",
+        "value":"All",
+        "bind":{
+          "input":"select",
+          "options":["All","Boys","Girls"],
+          "name":"Select gender: "
+        }
+      }
+    ],
+    "width": 680,
+    "height": 360,
+    "layer":[
+      {
+        "mark":"bar",
+        "encoding":{
+          "x":{"field":"AgeGroup","type":"ordinal","title":"Age group","sort":["2-4","5-7","8-11","12-15","16-17"]},
+          "y":{"field":"Percent","type":"quantitative","title":"Prevalence (%)","scale":{"domain":[0,40]}},
+          "color":{"field":"Gender","type":"nominal","title":"Gender"},
+          "tooltip":[{"field":"AgeGroup"},{"field":"Gender"},{"field":"Percent","type":"quantitative","format":".1f"}]
+        }
+      },
+      {
+        "mark":{"type":"rule","color":"#e11d48","strokeDash":[4,2]},
+        "encoding":{"y":{"datum":26.4}}
+      },
+      {
+        "mark":{"type":"text","color":"#e11d48","dx":6,"dy":-6,"align":"left"},
+        "encoding":{"y":{"datum":26.4},"x":{"value":6},"text":{"value":"All children (2–17) = 26.4%"}}
+      }
+    ],
+    "config":{"view":{"stroke":"transparent"}}
+  };
+
+  // Death causes time-series (multi-line)
+  var deathSpec = {
+    "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 680,
+    "height": 380,
+    "data": {"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes_old.csv"},
+    "mark":{"type":"line","point":true,"strokeWidth":3},
+    "encoding":{
+      "x":{"field":"Year","type":"temporal","axis":{"title":"Year"}},
+      "y":{"field":"Deaths","type":"quantitative","axis":{"title":"Number of deaths"}},
+      "color":{"field":"Cause","type":"nominal"},
+      "tooltip":[{"field":"Year"},{"field":"Cause"},{"field":"Deaths"}]
+    },
+    "config":{"view":{"stroke":"transparent"}}
+  };
+
+  // Activity vs Distress scatter (one point per age group)
+  var scatterSpec = {
+    "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 680,
+    "height": 380,
+    "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
+    "mark":{"type":"point","filled":true,"size":140},
+    "encoding":{
+      "x":{"field":"Activity_Met","type":"quantitative","title":"% meeting activity guidelines"},
+      "y":{"field":"Distress_High","type":"quantitative","title":"% high/very high distress"},
+      "color":{"field":"Age_Group","type":"nominal"},
+      "tooltip":[
+        {"field":"Age_Group"},{"field":"Activity_Met","title":"% Active"},{"field":"Distress_High","title":"% High Distress"}
+      ]
+    },
+    "config":{"view":{"stroke":"transparent"}}
+  };
+
+
+  /* ==== embed everything ==== */
+
+  // placeholders (simple text placeholders so they take the same space)
+  vegaEmbed('#placeholder-1', placeholderSpec('Placeholder - physical indicator', 640, 340), {actions:false});
+  vegaEmbed('#placeholder-2', placeholderSpec('Placeholder - physical trends', 640, 340), {actions:false});
+  vegaEmbed('#placeholder-3', placeholderSpec('Placeholder - mental health services', 640, 340), {actions:false});
+  vegaEmbed('#placeholder-4', placeholderSpec('Placeholder - suicide breakdown', 640, 340), {actions:false});
+  vegaEmbed('#placeholder-5', placeholderSpec('Placeholder', 640, 340), {actions:false});
+  vegaEmbed('#placeholder-6', placeholderSpec('Placeholder', 640, 340), {actions:false});
+  vegaEmbed('#psych-placeholder', placeholderSpec('Placeholder — psychological distress (stacked)', 640, 340), {actions:false});
+
+  // real charts
+  vegaEmbed('#adult-vis', adultSpec, {actions:false}).catch(console.error);
+  vegaEmbed('#child-vis', childSpec, {actions:false}).catch(console.error);
+  vegaEmbed('#death-vis', deathSpec, {actions:false}).catch(console.error);
+  vegaEmbed('#scatter-vis', scatterSpec, {actions:false}).catch(console.error);
+
+  </script>
+
+
+
+<div id="vg-tooltip-element" class="vg-tooltip" style="top: 578px; left: 1077px;"><table><tbody><tr><td class="key">AgeGroup</td><td class="value">16–17</td></tr><tr><td class="key">Gender</td><td class="value">All children</td></tr><tr><td class="key">Percent</td><td class="value">29.4</td></tr></tbody></table></div></body></html>
