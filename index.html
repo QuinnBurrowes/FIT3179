@@ -55,18 +55,17 @@
       margin: 12px auto;
     }
 
-    /* increased whitespace between charts */
     .chart-row {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 140px; /* increased from 96px to 140px for more horizontal space */
+      gap: 260px; /* increased horizontal whitespace */
       flex-wrap: wrap;
-      margin-top: 12px;
-      margin-bottom: 12px;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
-    .chart { width: 420px; }
+    .chart { width: 420px; max-width: 100%; }
 
     .caption, .text-block {
       margin-top: 8px;
@@ -161,21 +160,12 @@
           "transform":[{"lookup":"properties.STATE_NAME","from":{"data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/mental_state_real.csv"},"key":"STATE_NAME","fields":["value"]}}],
           "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
           "encoding":{
-            "color":{
-              "field":"value",
-              "type":"quantitative",
-              "title":"% adults (mental)",
-              "scale":{"scheme":"blues"},
-              "legend":{"orient":"left"} /* moved legend to left */
-            },
-            "tooltip":[
-              {"field":"properties.STATE_NAME","title":"State"},
-              {"field":"value","title":"% adults (mental)"}
-            ]
+            "color":{"field":"value","type":"quantitative","title":"% adults (mental)","scale":{"scheme":"blues"}},
+            "tooltip":[{"field":"properties.STATE_NAME","title":"State"},{"field":"value","title":"% adults (mental)"}]
           }
         }
       ],
-      "config":{"view":{"stroke":"transparent"}}
+      "config":{"legend":{"orient":"left"},"view":{"stroke":"transparent"}}
     };
 
     const specMap2 = {
@@ -189,7 +179,10 @@
           "data":{"url":"https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json","format":{"type":"json","property":"features"}},
           "transform":[{"lookup":"properties.STATE_NAME","from":{"data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_state.csv"},"key":"STATE_NAME","fields":["value"]}}],
           "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
-          "encoding":{"color":{"field":"value","type":"quantitative","title":"% adults (physical)","scale":{"scheme":"greens"}},"tooltip":[{"field":"properties.STATE_NAME","title":"State"},{"field":"value","title":"% adults (physical)"}]}
+          "encoding":{
+            "color":{"field":"value","type":"quantitative","title":"% adults (physical)","scale":{"scheme":"greens"}},
+            "tooltip":[{"field":"properties.STATE_NAME","title":"State"},{"field":"value","title":"% adults (physical)"}]
+          }
         }
       ],
       "config":{"view":{"stroke":"transparent"}}
