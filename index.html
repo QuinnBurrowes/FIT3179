@@ -59,7 +59,7 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 340px; /* increased horizontal whitespace */
+      gap: 380px; /* increased horizontal whitespace */
       flex-wrap: wrap;
       margin-top: 20px;
       margin-bottom: 20px;
@@ -207,7 +207,7 @@
       "encoding": {
         "x": {"field": "AgeGroup", "type": "ordinal", "sort": ["18-24","25-34","35-44","45-54","55-64","65-74","75 years and over"],"axis": {"title": "Age Group"}},
         "y": {"field": "RecommendationType", "type": "nominal", "sort": ["Fruit","Vegetable","Both"],"axis": {"title": "Recommendation Type"}},
-        "color": {"field": "MetPercent","type": "quantitative","title": "Percent meeting recommendation (%)","scale": {"scheme": "yellowgreenblue"}},
+        "color": {"field": "MetPercent","type": "quantitative","title": "Meeting recommendation (%)","scale": {"scheme": "yellowgreenblue"}},
         "tooltip": [{"field": "AgeGroup"},{"field": "RecommendationType"},{"field": "MetPercent","title": "Percent (%)"}]
       },
       "config": {"view": {"stroke": "transparent"}}
