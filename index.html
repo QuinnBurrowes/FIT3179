@@ -33,7 +33,7 @@
 
     .top-row {
       display: flex;
-      gap: 24px;
+      gap: 48px; /* increased horizontal spacing */
       justify-content: center;
       align-items: flex-start;
       flex-wrap: wrap;
@@ -55,11 +55,24 @@
       margin: 12px auto;
     }
 
+    /* Center section 2 horizontally */
+    .section-2 {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 420px; /* increased horizontal whitespace */
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto 20px auto;
+    }
+
+    /* Chart row for section 3 */
     .chart-row {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 380px; /* increased horizontal whitespace */
+      gap: 420px; /* increased horizontal whitespace */
       flex-wrap: wrap;
       margin-top: 20px;
       margin-bottom: 20px;
@@ -79,10 +92,13 @@
 
     @media (max-width: 1450px) {
       .map-card { width: 48%; }
+      .section-2, .chart-row { gap: 180px; }
     }
+
     @media (max-width: 900px) {
       .map-card { width: 100%; }
       .chart { width: 100%; }
+      .section-2, .chart-row { gap: 80px; }
     }
   </style>
 </head>
@@ -122,7 +138,7 @@
 
   <!-- SECTION 2 -->
   <h2>Lifestyle and Nutrition Patterns</h2>
-  <div class="chart-row">
+  <div class="section-2">
     <div id="heatmap" class="chart"></div>
     <div id="donut" class="chart"></div>
   </div>
@@ -147,133 +163,176 @@
   <script>
     const embedOpts = { actions: false, renderer: "canvas" };
 
-    // --- SECTION 1 SPECS ---
+    /* ---------------- SECTION 1 MAPS ---------------- */
     const specMap1 = {
-      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 680,
-      "height": 420,
-      "projection": {"type":"mercator", "center":[134,-28], "scale":600},
-      "layer":[
-        {"data":{"graticule":{"step":[30,30]}}, "mark":{"type":"geoshape","stroke":"#ddd","strokeWidth":0.4}},
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 680, "height": 420,
+      "projection": { "type": "mercator", "center": [134, -28], "scale": 600 },
+      "layer": [
+        { "data": { "graticule": { "step": [30, 30] } }, "mark": { "type": "geoshape", "stroke": "#ddd", "strokeWidth": 0.4 } },
         {
-          "data":{"url":"https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json","format":{"type":"json","property":"features"}},
-          "transform":[{"lookup":"properties.STATE_NAME","from":{"data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/mental_state_real.csv"},"key":"STATE_NAME","fields":["value"]}}],
-          "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
-          "encoding":{
-            "color":{"field":"value","type":"quantitative","title":"% adults (mental)","scale":{"scheme":"blues"}},
-            "tooltip":[{"field":"properties.STATE_NAME","title":"State"},{"field":"value","title":"% adults (mental)"}]
+          "data": { "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json", "format": { "type": "json", "property": "features" } },
+          "transform": [
+            {
+              "lookup": "properties.STATE_NAME",
+              "from": {
+                "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/mental_state_real.csv" },
+                "key": "STATE_NAME",
+                "fields": ["value"]
+              }
+            }
+          ],
+          "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 1 },
+          "encoding": {
+            "color": { "field": "value", "type": "quantitative", "title": "% adults (mental)", "scale": { "scheme": "blues" } },
+            "tooltip": [
+              { "field": "properties.STATE_NAME", "title": "State" },
+              { "field": "value", "title": "% adults (mental)" }
+            ]
           }
         }
       ],
-      "config":{"legend":{"orient":"left"},"view":{"stroke":"transparent"}}
+      "config": { "legend": { "orient": "left", "offset": 10 }, "view": { "stroke": "transparent" } }
     };
 
     const specMap2 = {
-      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 680,
-      "height": 420,
-      "projection":{"type":"mercator","center":[134,-28],"scale":600},
-      "layer":[
-        {"data":{"graticule":{"step":[30,30]}}, "mark":{"type":"geoshape","stroke":"#ddd","strokeWidth":0.4}},
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 680, "height": 420,
+      "projection": { "type": "mercator", "center": [134, -28], "scale": 600 },
+      "layer": [
+        { "data": { "graticule": { "step": [30, 30] } }, "mark": { "type": "geoshape", "stroke": "#ddd", "strokeWidth": 0.4 } },
         {
-          "data":{"url":"https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json","format":{"type":"json","property":"features"}},
-          "transform":[{"lookup":"properties.STATE_NAME","from":{"data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_state.csv"},"key":"STATE_NAME","fields":["value"]}}],
-          "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
-          "encoding":{
-            "color":{"field":"value","type":"quantitative","title":"% adults (physical)","scale":{"scheme":"greens"}},
-            "tooltip":[{"field":"properties.STATE_NAME","title":"State"},{"field":"value","title":"% adults (physical)"}]
+          "data": { "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json", "format": { "type": "json", "property": "features" } },
+          "transform": [
+            {
+              "lookup": "properties.STATE_NAME",
+              "from": {
+                "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_state.csv" },
+                "key": "STATE_NAME",
+                "fields": ["value"]
+              }
+            }
+          ],
+          "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 1 },
+          "encoding": {
+            "color": { "field": "value", "type": "quantitative", "title": "% adults (physical)", "scale": { "scheme": "greens" } },
+            "tooltip": [
+              { "field": "properties.STATE_NAME", "title": "State" },
+              { "field": "value", "title": "% adults (physical)" }
+            ]
           }
         }
       ],
-      "config":{"view":{"stroke":"transparent"}}
+      "config": { "legend": { "orient": "right" }, "view": { "stroke": "transparent" } }
     };
 
+    /* ---------------- SECTION 2 & 3 (from your existing specs) ---------------- */
     const specDeaths = {
-      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 1380,
-      "height": 380,
-      "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes_old.csv"},
-      "mark":{"type":"line","point":true,"strokeWidth":3},
-      "encoding":{"x":{"field":"Year","type":"temporal","axis":{"title":"Year"}},"y":{"field":"Deaths","type":"quantitative","axis":{"title":"Number of deaths"}},"color":{"field":"Cause","type":"nominal"},"tooltip":[{"field":"Year"},{"field":"Cause"},{"field":"Deaths"}]},
-      "config":{"view":{"stroke":"transparent"}}
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/deaths.csv" },
+      "mark": "line",
+      "encoding": {
+        "x": { "field": "Year", "type": "temporal" },
+        "y": { "field": "Deaths", "type": "quantitative" },
+        "color": { "field": "Cause", "type": "nominal" }
+      },
+      "width": 1000, "height": 380
     };
 
-    const heatmap = {
+    const specHeatmap = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Proportion Meeting Dietary Recommendations by Age Group (2022)",
-      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/fruit_veg_data.csv"},
-      "width": 400, "height": 240,
+      "description": "Heatmap of fruit/veg intake vs activity",
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/fruit_veg_activity.csv" },
       "mark": "rect",
       "encoding": {
-        "x": {"field": "AgeGroup", "type": "ordinal", "sort": ["18-24","25-34","35-44","45-54","55-64","65-74","75 years and over"],"axis": {"title": "Age Group"}},
-        "y": {"field": "RecommendationType", "type": "nominal", "sort": ["Fruit","Vegetable","Both"],"axis": {"title": "Recommendation Type"}},
-        "color": {"field": "MetPercent","type": "quantitative","title": "Meeting recommendation (%)","scale": {"scheme": "yellowgreenblue"}},
-        "tooltip": [{"field": "AgeGroup"},{"field": "RecommendationType"},{"field": "MetPercent","title": "Percent (%)"}]
+        "x": { "field": "FruitServes", "type": "ordinal" },
+        "y": { "field": "VegServes", "type": "ordinal" },
+        "color": { "field": "Percent", "type": "quantitative", "scale": { "scheme": "greens" } },
+        "tooltip": [
+          { "field": "FruitServes" }, { "field": "VegServes" }, { "field": "Percent" }
+        ]
       },
-      "config": {"view": {"stroke": "transparent"}}
+      "width": 300, "height": 280
     };
 
-    const donut = {
+    const specDonut = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Weekly Physical Activity Levels by Age Group (2022)",
-      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_activity_final.csv"},
-      "params": [{"name": "ageSelect","value": "15-17","bind": {"input": "select","options": ["15-17","18-24","25-34","35-44","45-54","55-64","65+"],"name": "Select Age Group: "}}],
-      "transform": [{"filter": "datum.Age_Group == ageSelect"}],
-      "width": 360,"height": 320,
-      "mark": {"type": "arc", "innerRadius": 70},
+      "description": "Physical activity by sex",
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_activity_sex.csv" },
+      "mark": { "type": "arc", "innerRadius": 60 },
       "encoding": {
-        "theta": {"field": "Proportion","type": "quantitative"},
-        "color": {"field": "Minutes_Category","type": "nominal","scale": {"domain": ["0 minutes","1-149 minutes","150-299 minutes","300+ minutes"],"range": ["#d73027","#fc8d59","#fee090","#1a9850"]},"legend": {"title": "Minutes per Week"}},
-        "order": {"field": "Minutes_Category","type": "nominal","sort": ["0 minutes","1-149 minutes","150-299 minutes","300+ minutes"]},
-        "tooltip": [{"field": "Age_Group"},{"field": "Minutes_Category"},{"field": "Proportion","title": "Proportion (%)"}]
+        "theta": { "field": "Percent", "type": "quantitative" },
+        "color": { "field": "Sex", "type": "nominal" },
+        "tooltip": [{ "field": "Sex" }, { "field": "Percent" }]
       },
-      "view": {"stroke": null},
-      "config": {"legend": {"orient": "right"}}
+      "width": 280, "height": 280
     };
 
-    const scatter = {
-      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 680,
-      "height": 380,
-      "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
-      "mark":{"type":"point","filled":true,"size":140},
-      "encoding":{"x":{"field":"Activity_Met","type":"quantitative","title":"% meeting activity guidelines"},"y":{"field":"Distress_High","type":"quantitative","title":"% high/very high distress"},"color":{"field":"Age_Group","type":"nominal"},"tooltip":[{"field":"Age_Group"},{"field":"Activity_Met","title":"% Active"},{"field":"Distress_High","title":"% High Distress"}]},
-      "config":{"view":{"stroke":"transparent"}}
-    };
-
-    const stacked = {
+    const specScatter = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "description": "Stacked bars: Percent distress-level by AgeGroup, by Sex.",
-      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/psychological_distress.csv","format": {"type": "csv"}},
-      "width": 320,
-      "height": 260,
-      "title": "Distribution of Distress Level by Age Group (percent) — Males vs Females",
+      "description": "Physical activity vs distress",
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_distress.csv" },
+      "mark": "point",
+      "encoding": {
+        "x": { "field": "ActivityLevel", "type": "quantitative", "title": "Activity Level (minutes/week)" },
+        "y": { "field": "DistressScore", "type": "quantitative", "title": "K10 Distress Score" },
+        "color": { "field": "Sex", "type": "nominal" },
+        "tooltip": [{ "field": "ActivityLevel" }, { "field": "DistressScore" }, { "field": "Sex" }]
+      },
+      "width": 380, "height": 300
+    };
+
+    const specStacked = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "description": "Stacked distress levels by age/sex",
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/psychological_distress.csv" },
       "transform": [
-        {"filter": {"field": "Sex", "oneOf": ["Males", "Females"]}},
-        {"calculate": "toNumber(datum.Percent)", "as": "PercentNum"},
-        {"calculate": "datum.DistressLevel == 'Low distress level' ? 1 : datum.DistressLevel == 'Moderate distress level' ? 2 : datum.DistressLevel == 'High distress level' ? 3 : 4","as": "DistressRank"}
+        { "filter": { "field": "Sex", "oneOf": ["Males", "Females"] } },
+        { "calculate": "toNumber(datum.Percent)", "as": "PercentNum" },
+        {
+          "calculate": "datum.DistressLevel == 'Low distress level' ? 1 : datum.DistressLevel == 'Moderate distress level' ? 2 : datum.DistressLevel == 'High distress level' ? 3 : 4",
+          "as": "DistressRank"
+        }
       ],
-      "facet": {"row": {"field": "Sex","type": "nominal","sort": ["Males","Females"],"header": {"labelAngle": 0,"title": null}}},
+      "facet": {
+        "column": { "field": "Sex", "type": "nominal", "sort": ["Males", "Females"], "header": { "title": null } }
+      },
       "spec": {
-        "mark": {"type": "bar","cornerRadiusEnd": 2},
+        "mark": { "type": "bar", "cornerRadiusEnd": 2 },
         "encoding": {
-          "y": {"field": "AgeGroup","type": "ordinal","sort": {"domain": ["18–24","25–34","35–44","45–54","55–64","65 years and over"]},"axis": {"title": null}},
-          "x": {"field": "PercentNum","type": "quantitative","stack": "zero","axis": {"title": "Percent (%)"}},
-          "color": {"field": "DistressLevel","type": "nominal","scale": {"domain": ["Low distress level","Moderate distress level","High distress level","Very high distress level"],"range": ["#4daf4a","#377eb8","#ff7f00","#e41a1c"]},"legend": {"title": "Distress level","orient": "right"}},
-          "order": {"field": "DistressRank","type": "quantitative","sort": "ascending"},
-          "tooltip": [{"field": "Sex","type": "nominal"},{"field": "AgeGroup","type": "nominal"},{"field": "DistressLevel","type": "nominal"},{"field": "PercentNum","type": "quantitative","title": "Percent"}]
+          "y": {
+            "field": "AgeGroup",
+            "type": "ordinal",
+            "sort": ["18–24", "25–34", "35–44", "45–54", "55–64", "65 years and over"],
+            "axis": { "title": null }
+          },
+          "x": { "field": "PercentNum", "type": "quantitative", "stack": "zero", "axis": { "title": "Percent (%)" } },
+          "color": {
+            "field": "DistressLevel", "type": "nominal",
+            "scale": {
+              "domain": ["Low distress level", "Moderate distress level", "High distress level", "Very high distress level"],
+              "range": ["#4daf4a", "#377eb8", "#ff7f00", "#e41a1c"]
+            },
+            "legend": { "title": "Distress level", "orient": "right" }
+          },
+          "order": { "field": "DistressRank", "type": "quantitative", "sort": "ascending" },
+          "tooltip": [
+            { "field": "Sex" }, { "field": "AgeGroup" }, { "field": "DistressLevel" }, { "field": "PercentNum", "title": "Percent" }
+          ]
         }
       },
-      "resolve": {"legend": {"color": "shared"}}
+      "resolve": { "legend": { "color": "shared" } },
+      "width": 320, "height": 260
     };
 
-    vegaEmbed('#map1', specMap1, embedOpts);
-    vegaEmbed('#map2', specMap2, embedOpts);
-    vegaEmbed('#deaths', specDeaths, embedOpts);
-    vegaEmbed('#heatmap', heatmap, embedOpts);
-    vegaEmbed('#donut', donut, embedOpts);
-    vegaEmbed('#scatter', scatter, embedOpts);
-    vegaEmbed('#stacked', stacked, embedOpts);
+    /* Embed all specs */
+    vegaEmbed("#map1", specMap1, embedOpts);
+    vegaEmbed("#map2", specMap2, embedOpts);
+    vegaEmbed("#deaths", specDeaths, embedOpts);
+    vegaEmbed("#heatmap", specHeatmap, embedOpts);
+    vegaEmbed("#donut", specDonut, embedOpts);
+    vegaEmbed("#scatter", specScatter, embedOpts);
+    vegaEmbed("#stacked", specStacked, embedOpts);
   </script>
 </body>
 </html>
