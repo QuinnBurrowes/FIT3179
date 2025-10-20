@@ -17,9 +17,14 @@
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 8px;
       font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-weight: 600;
+      text-decoration: underline;
     }
 
     .lead {
@@ -30,20 +35,36 @@
 
     .top-row {
       display: flex;
-      gap: 32px; /* more space between maps */
+      gap: 32px;
       justify-content: center;
       align-items: flex-start;
       flex-wrap: wrap;
       margin-bottom: 8px;
     }
 
-    .map-card {
+    .map-card, .chart-card {
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 6px 18px rgba(15,23,42,0.06);
       padding: 12px;
-      width: 680px;
       box-sizing: border-box;
+    }
+
+    .map-card { width: 680px; }
+
+    .chart-card.wide {
+      width: calc(100% - 36px);
+      max-width: 1380px;
+      margin: 0 auto;
+      margin-top: 22px;
+    }
+
+    .chart-row {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+      margin-top: 20px;
     }
 
     .text-section {
@@ -55,21 +76,6 @@
       line-height: 1.5;
     }
 
-    .chart-row {
-      display: flex;
-      justify-content: center;
-      gap: 60px; /* wider horizontal gap between heatmap and donut */
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .chart-card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 6px 18px rgba(15,23,42,0.06);
-      padding: 12px;
-    }
-
     .caption {
       margin-top: 8px;
       font-size: 13px;
@@ -78,14 +84,14 @@
   </style>
 </head>
 <body>
-  <h1>Physical, Mental, and Combined Health Patterns in Australia</h1>
+  <h1>Physical, Mental, and Lifestyle Health in Australia</h1>
   <p class="lead">
-    Visual exploration of physical and mental health indicators across Australian states and age groups.  
-    Data sources: ABS (National Health Survey 2022) and AIHW.
+    A visual exploration of health outcomes, behaviours, and lifestyle differences across Australia.  
+    Data: ABS National Health Survey (2022) & AIHW.
   </p>
 
-  <!-- CATEGORY 1: NATIONAL OVERVIEW -->
-  <h2>1. National Overview</h2>
+  <!-- 🗺️ CATEGORY 1 -->
+  <h2>Geographic Health Patterns in Australia</h2>
   <div class="top-row">
     <div class="map-card">
       <div id="map1"></div>
@@ -99,11 +105,19 @@
   </div>
 
   <div class="text-section">
-    These maps highlight how health outcomes vary geographically.  
-    Mental health conditions are more prevalent in some regions, whereas adherence to physical activity 
-    recommendations tends to be higher in southern states. The contrast suggests possible regional
-    differences in wellbeing, lifestyle, and access to healthcare.
+    These maps show significant state-level variation in wellbeing.  
+    Mental health conditions appear more common in some northern regions, while physical activity
+    compliance is generally stronger in southern states. This highlights how environment and accessibility
+    shape population health.
   </div>
+
+  <div class="chart-card wide">
+    <div id="deaths"></div>
+    <div class="caption">Trends in leading causes of death across Australia (2000–2022).</div>
+  </div>
+
+  <!-- 🍎 CATEGORY 2 -->
+  <h2>Lifestyle and Health Behaviours by Age Group</h2>
 
   <div class="chart-row">
     <div class="chart-card" id="heatmap"></div>
@@ -111,53 +125,82 @@
   </div>
 
   <div class="text-section">
-    The left heatmap shows how different age groups meet fruit and vegetable intake recommendations, 
-    while the donut chart shows physical activity levels across age groups. 
-    Younger Australians are less likely to meet dietary and exercise guidelines than older adults.
+    The heatmap illustrates how fruit and vegetable consumption improves with age, 
+    while the donut chart shows that younger Australians are less likely to achieve recommended physical activity levels.
+    These behaviours contribute to early onset chronic conditions and differences in wellbeing.
   </div>
 
   <script>
-    // ====== MAP 1 (Mental health) ======
+    const opts = {actions: false};
+
+    // ===== MAP 1 (Mental health) =====
     const specMap1 = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
-      "width":680, "height":420,
+      "width":680,"height":420,
       "projection":{"type":"mercator","center":[134,-28],"scale":600},
       "layer":[
-        {"data":{"graticule":{"step":[30,30]}}, "mark":{"type":"geoshape","stroke":"#ddd","strokeWidth":0.4}},
+        {"data":{"graticule":{"step":[30,30]}},
+         "mark":{"type":"geoshape","stroke":"#ddd","strokeWidth":0.4}},
         {
-          "data":{"url":"https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json","format":{"type":"json","property":"features"}},
-          "transform":[{"lookup":"properties.STATE_NAME","from":{"data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/mental_state_real.csv"},"key":"STATE_NAME","fields":["value"]}}],
+          "data":{"url":"https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json",
+                  "format":{"type":"json","property":"features"}},
+          "transform":[{"lookup":"properties.STATE_NAME",
+                        "from":{"data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/mental_state_real.csv"},
+                                "key":"STATE_NAME","fields":["value"]}}],
           "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
           "encoding":{
-            "color":{"field":"value","type":"quantitative","title":"% adults (mental)","scale":{"scheme":"blues"},"legend":{"orient":"left"}},
-            "tooltip":[{"field":"properties.STATE_NAME","title":"State"},{"field":"value","title":"% adults (mental)"}]
+            "color":{"field":"value","type":"quantitative","title":"% adults (mental)",
+                     "scale":{"scheme":"blues"},"legend":{"orient":"left"}},
+            "tooltip":[{"field":"properties.STATE_NAME","title":"State"},
+                       {"field":"value","title":"% adults (mental)"}]
           }
         }
       ],
       "config":{"view":{"stroke":"transparent"}}
     };
 
-    // ====== MAP 2 (Physical health) ======
+    // ===== MAP 2 (Physical health) =====
     const specMap2 = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
-      "width":680, "height":420,
+      "width":680,"height":420,
       "projection":{"type":"mercator","center":[134,-28],"scale":600},
       "layer":[
-        {"data":{"graticule":{"step":[30,30]}}, "mark":{"type":"geoshape","stroke":"#ddd","strokeWidth":0.4}},
+        {"data":{"graticule":{"step":[30,30]}},
+         "mark":{"type":"geoshape","stroke":"#ddd","strokeWidth":0.4}},
         {
-          "data":{"url":"https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json","format":{"type":"json","property":"features"}},
-          "transform":[{"lookup":"properties.STATE_NAME","from":{"data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_state.csv"},"key":"STATE_NAME","fields":["value"]}}],
+          "data":{"url":"https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json",
+                  "format":{"type":"json","property":"features"}},
+          "transform":[{"lookup":"properties.STATE_NAME",
+                        "from":{"data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_state.csv"},
+                                "key":"STATE_NAME","fields":["value"]}}],
           "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
           "encoding":{
-            "color":{"field":"value","type":"quantitative","title":"% adults (physical)","scale":{"scheme":"greens"}},
-            "tooltip":[{"field":"properties.STATE_NAME","title":"State"},{"field":"value","title":"% adults (physical)"}]
+            "color":{"field":"value","type":"quantitative","title":"% adults (physical)",
+                     "scale":{"scheme":"greens"}},
+            "tooltip":[{"field":"properties.STATE_NAME","title":"State"},
+                       {"field":"value","title":"% adults (physical)"}]
           }
         }
       ],
       "config":{"view":{"stroke":"transparent"}}
     };
 
-    // ====== HEATMAP ======
+    // ===== DEATHS CHART =====
+    const specDeaths = {
+      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+      "width":1380,"height":380,
+      "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes_old.csv"},
+      "mark":{"type":"line","point":true,"strokeWidth":3},
+      "encoding":{
+        "x":{"field":"Year","type":"temporal","axis":{"title":"Year"}},
+        "y":{"field":"Deaths","type":"quantitative","axis":{"title":"Number of deaths"}},
+        "color":{"field":"Cause","type":"nominal"},
+        "tooltip":[{"field":"Year"},{"field":"Cause"},{"field":"Deaths"}]
+      },
+      "config":{"view":{"stroke":"transparent"}}
+    };
+
+    // ===== HEATMAP =====
     const specHeatmap = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "title": "Proportion Meeting Dietary Recommendations by Age Group (2022)",
@@ -165,34 +208,73 @@
       "width": 400, "height": 240,
       "mark": "rect",
       "encoding": {
-        "x": {"field": "AgeGroup", "type": "ordinal", "sort": ["18-24","25-34","35-44","45-54","55-64","65-74","75 years and over"],"axis": {"title": "Age Group"}},
-        "y": {"field": "RecommendationType", "type": "nominal","sort": ["Fruit", "Vegetable", "Both"],"axis": {"title": "Recommendation Type"}},
-        "color": {"field": "MetPercent", "type": "quantitative","title": "Percent meeting recommendation (%)","scale": {"scheme": "yellowgreenblue"}},
-        "tooltip": [{"field": "AgeGroup"},{"field": "RecommendationType"},{"field": "MetPercent","title": "Percent (%)"}]
+        "x": {
+          "field": "AgeGroup",
+          "type": "ordinal",
+          "sort": ["18-24","25-34","35-44","45-54","55-64","65-74","75 years and over"],
+          "axis": {"title": "Age Group", "labelAngle": 0}
+        },
+        "y": {
+          "field": "RecommendationType",
+          "type": "nominal",
+          "sort": ["Fruit", "Vegetable", "Both"],
+          "axis": {"title": "Recommendation Type"}
+        },
+        "color": {
+          "field": "MetPercent",
+          "type": "quantitative",
+          "title": "Percent meeting recommendation (%)",
+          "scale": {"scheme": "yellowgreenblue"}
+        },
+        "tooltip": [
+          {"field": "AgeGroup"},
+          {"field": "RecommendationType"},
+          {"field": "MetPercent","title": "Percent (%)"}
+        ]
       },
       "config": {"view": {"stroke": "transparent"}}
     };
 
-    // ====== DONUT ======
+    // ===== DONUT =====
     const specDonut = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "title": "Weekly Physical Activity Levels by Age Group (2022)",
       "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/physical_activity_final.csv"},
-      "params": [{"name": "ageSelect","value": "15-17","bind": {"input": "select","options": ["15-17","18-24","25-34","35-44","45-54","55-64","65+"],"name": "Select Age Group: "}}],
+      "params": [{
+        "name": "ageSelect",
+        "value": "15-17",
+        "bind": {
+          "input": "select",
+          "options": ["15-17","18-24","25-34","35-44","45-54","55-64","65+"],
+          "name": "Select Age Group: "
+        }
+      }],
       "transform": [{"filter": "datum.Age_Group == ageSelect"}],
       "width": 360, "height": 320,
       "mark": {"type": "arc", "innerRadius": 70},
       "encoding": {
         "theta": {"field": "Proportion", "type": "quantitative"},
-        "color": {"field": "Minutes_Category","type": "nominal","scale": {"domain": ["0 minutes", "1-149 minutes", "150-299 minutes", "300+ minutes"],"range": ["#d73027", "#fc8d59", "#fee090", "#1a9850"]},"legend": {"title": "Minutes per Week"}},
-        "tooltip": [{"field": "Age_Group","title": "Age Group"},{"field": "Minutes_Category","title": "Minutes per Week"},{"field": "Proportion","title": "Proportion (%)"}]
+        "color": {
+          "field": "Minutes_Category",
+          "type": "nominal",
+          "scale": {
+            "domain": ["0 minutes","1-149 minutes","150-299 minutes","300+ minutes"],
+            "range": ["#d73027","#fc8d59","#fee090","#1a9850"]
+          },
+          "legend": {"title": "Minutes per Week"}
+        },
+        "tooltip": [
+          {"field": "Age_Group","title": "Age Group"},
+          {"field": "Minutes_Category","title": "Minutes per Week"},
+          {"field": "Proportion","title": "Proportion (%)"}
+        ]
       },
       "config": {"view": {"stroke": null},"legend": {"orient": "right"}}
     };
 
-    const opts = {actions: false};
     vegaEmbed('#map1', specMap1, opts);
     vegaEmbed('#map2', specMap2, opts);
+    vegaEmbed('#deaths', specDeaths, opts);
     vegaEmbed('#heatmap', specHeatmap, opts);
     vegaEmbed('#donut', specDonut, opts);
   </script>
