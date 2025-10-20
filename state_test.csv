@@ -1,0 +1,33 @@
+category,type,state,percent
+Health,Met_physical_activity_guidelines,New South Wales,24.3
+Health,Met_physical_activity_guidelines,Victoria,24.5
+Health,Met_physical_activity_guidelines,Queensland,23.6
+Health,Met_physical_activity_guidelines,South Australia,24.0
+Health,Met_physical_activity_guidelines,Western Australia,23.2
+Health,Met_physical_activity_guidelines,Tasmania,22.9
+Health,Met_physical_activity_guidelines,Northern Territory,24.6
+Health,Met_physical_activity_guidelines,Australian Capital Territory,19.9
+Health,Did_not_meet_vegetable_recommendation,New South Wales,93.2
+Health,Did_not_meet_vegetable_recommendation,Victoria,93.6
+Health,Did_not_meet_vegetable_recommendation,Queensland,94.9
+Health,Did_not_meet_vegetable_recommendation,South Australia,92.2
+Health,Did_not_meet_vegetable_recommendation,Western Australia,92.3
+Health,Did_not_meet_vegetable_recommendation,Tasmania,89.1
+Health,Did_not_meet_vegetable_recommendation,Northern Territory,93.9
+Health,Did_not_meet_vegetable_recommendation,Australian Capital Territory,92.3
+Health,Overweight_or_obese,New South Wales,63.1
+Health,Overweight_or_obese,Victoria,65.3
+Health,Overweight_or_obese,Queensland,68.8
+Health,Overweight_or_obese,South Australia,68.0
+Health,Overweight_or_obese,Western Australia,68.0
+Health,Overweight_or_obese,Tasmania,70.5
+Health,Overweight_or_obese,Northern Territory,63.8
+Health,Overweight_or_obese,Australian Capital Territory,64.0
+Health,Mental_and_behavioural_conditions,New South Wales,22.2
+Health,Mental_and_behavioural_conditions,Victoria,25.6
+Health,Mental_and_behavioural_conditions,Queensland,30.8
+Health,Mental_and_behavioural_conditions,South Australia,28.8
+Health,Mental_and_behavioural_conditions,Western Australia,27.0
+Health,Mental_and_behavioural_conditions,Tasmania,29.5
+Health,Mental_and_behavioural_conditions,Northern Territory,21.6
+Health,Mental_and_behavioural_conditions,Australian Capital Territory,28.1
