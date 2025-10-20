@@ -241,45 +241,120 @@
 
     const specHeatmap = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "description": "Heatmap of fruit/veg intake vs activity",
-      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/fruit_veg_data.csv" },
+      "title": "Proportion Meeting Dietary Recommendations by Age Group (2022)",
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/fruit_veg_data.csv",
+        "format": {"type": "csv"}
+      },
+      "width": 400,
+      "height": 240,
       "mark": "rect",
       "encoding": {
-        "x": { "field": "FruitServes", "type": "ordinal" },
-        "y": { "field": "VegServes", "type": "ordinal" },
-        "color": { "field": "Percent", "type": "quantitative", "scale": { "scheme": "greens" } },
+        "x": {
+          "field": "AgeGroup",
+          "type": "ordinal",
+          "sort": ["18-24","25-34","35-44","45-54","55-64","65-74","75 years and over"],
+          "axis": {"title": "Age Group"}
+        },
+        "y": {
+          "field": "RecommendationType",
+          "type": "nominal",
+          "sort": ["Fruit", "Vegetable", "Both"],
+          "axis": {"title": "Recommendation Type"}
+        },
+        "color": {
+          "field": "MetPercent",
+          "type": "quantitative",
+          "title": "Percent meeting recommendation (%)",
+          "scale": {"scheme": "yellowgreenblue"}
+        },
         "tooltip": [
-          { "field": "FruitServes" }, { "field": "VegServes" }, { "field": "Percent" }
+          {"field": "AgeGroup", "type": "nominal"},
+          {"field": "RecommendationType", "type": "nominal"},
+          {"field": "MetPercent", "type": "quantitative", "title": "Percent (%)"}
         ]
       },
-      "width": 300, "height": 280
+      "config": {"view": {"stroke": "transparent"}}
     };
 
     const specDonut = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "description": "Physical activity by sex",
-      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_activity_final.csv" },
-      "mark": { "type": "arc", "innerRadius": 60 },
-      "encoding": {
-        "theta": { "field": "Percent", "type": "quantitative" },
-        "color": { "field": "Sex", "type": "nominal" },
-        "tooltip": [{ "field": "Sex" }, { "field": "Percent" }]
+      "description": "Interactive donut chart showing weekly physical activity distribution by age group.",
+      "title": "Weekly Physical Activity Levels by Age Group (2022)",
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/physical_activity_final.csv",
+        "format": {"type": "csv"}
       },
-      "width": 280, "height": 280
+      "params": [
+        {
+          "name": "ageSelect",
+          "value": "15-17",
+          "bind": {
+            "input": "select",
+            "options": [
+              "15-17",
+              "18-24",
+              "25-34",
+              "35-44",
+              "45-54",
+              "55-64",
+              "65+"
+            ],
+            "name": "Select Age Group: "
+          }
+        }
+      ],
+      "transform": [
+        {"filter": "datum.Age_Group == ageSelect"}
+      ],
+      "width": 360,
+      "height": 320,
+      "mark": {"type": "arc", "innerRadius": 70},
+      "encoding": {
+        "theta": {"field": "Proportion", "type": "quantitative"},
+        "color": {
+          "field": "Minutes_Category",
+          "type": "nominal",
+          "scale": {
+            "domain": ["0 minutes", "1-149 minutes", "150-299 minutes", "300+ minutes"],
+            "range": ["#d73027", "#fc8d59", "#fee090", "#1a9850"]
+          },
+          "legend": {"title": "Minutes per Week"}
+        },
+        "order": {
+          "field": "Minutes_Category",
+          "type": "nominal",
+          "sort": ["0 minutes", "1-149 minutes", "150-299 minutes", "300+ minutes"]
+        },
+        "tooltip": [
+          {"field": "Age_Group", "title": "Age Group"},
+          {"field": "Minutes_Category", "title": "Minutes per Week"},
+          {"field": "Proportion", "title": "Proportion (%)"}
+        ]
+      },
+      "view": {"stroke": null},
+      "config": {
+        "legend": {"orient": "right"},
+        "axis": {"domain": false, "grid": false, "labels": false, "ticks": false}
+      }
     };
 
+
     const specScatter = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "description": "Physical activity vs distress",
-      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv" },
-      "mark": "point",
-      "encoding": {
-        "x": { "field": "ActivityLevel", "type": "quantitative", "title": "Activity Level (minutes/week)" },
-        "y": { "field": "DistressScore", "type": "quantitative", "title": "K10 Distress Score" },
-        "color": { "field": "Sex", "type": "nominal" },
-        "tooltip": [{ "field": "ActivityLevel" }, { "field": "DistressScore" }, { "field": "Sex" }]
+      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 680,
+      "height": 380,
+      "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
+      "mark":{"type":"point","filled":true,"size":140},
+      "encoding":{
+        "x":{"field":"Activity_Met","type":"quantitative","title":"% meeting activity guidelines"},
+        "y":{"field":"Distress_High","type":"quantitative","title":"% high/very high distress"},
+        "color":{"field":"Age_Group","type":"nominal"},
+        "tooltip":[
+          {"field":"Age_Group"},{"field":"Activity_Met","title":"% Active"},{"field":"Distress_High","title":"% High Distress"}
+        ]
       },
-      "width": 380, "height": 300
+      "config":{"view":{"stroke":"transparent"}}
     };
 
     const specStacked = {
