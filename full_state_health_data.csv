@@ -179,5 +179,14 @@ Overweight_or_obese,health_risk_factor,Tas,70.5
 Overweight_or_obese,health_risk_factor,NT,63.8
 Overweight_or_obese,health_risk_factor,ACT,64.0
 Overweight_or_obese,health_risk_factor,Australia,65.8
+Met_physical_activity_guidelines,health_risk_factor,ACT,19.9
+Met_physical_activity_guidelines,health_risk_factor,NT,24.6
+Met_physical_activity_guidelines,health_risk_factor,Tas,22.9
+Met_physical_activity_guidelines,health_risk_factor,WA,23.2
+Met_physical_activity_guidelines,health_risk_factor,SA,24.0
+Met_physical_activity_guidelines,health_risk_factor,Qld,23.6
+Met_physical_activity_guidelines,health_risk_factor,Vic,24.5
+Met_physical_activity_guidelines,health_risk_factor,NSW,24.3
+
 
   source: https://www.abs.gov.au/statistics/health/health-conditions-and-risks/national-health-survey-state-and-territory-findings/latest-release 
