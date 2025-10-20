@@ -55,26 +55,17 @@
       margin: 12px auto;
     }
 
-    /* NEW WRAPPER to center chart rows like maps */
-    .chart-row-container {
+    .chart-row {
       display: flex;
       justify-content: center;
+      align-items: flex-start;
+      gap: 380px; /* increased horizontal whitespace */
+      flex-wrap: wrap;
       margin-top: 20px;
       margin-bottom: 20px;
     }
 
-    .chart-row {
-      display: flex;
-      justify-content: space-between;
-      width: 1120px; /* aligns total width with section 1 maps */
-      gap: 120px; /* horizontal space between charts */
-      flex-wrap: nowrap;
-    }
-
-    .chart {
-      width: 480px;
-      max-width: 100%;
-    }
+    .chart { width: 420px; max-width: 100%; }
 
     .caption, .text-block {
       margin-top: 8px;
@@ -88,11 +79,10 @@
 
     @media (max-width: 1450px) {
       .map-card { width: 48%; }
-      .chart-row { flex-wrap: wrap; width: auto; gap: 48px; justify-content: center; }
     }
-
     @media (max-width: 900px) {
-      .map-card, .chart { width: 100%; }
+      .map-card { width: 100%; }
+      .chart { width: 100%; }
     }
   </style>
 </head>
@@ -113,6 +103,7 @@
       <div id="map1"></div>
       <div class="caption">Mental health conditions prevalence by state (ABS 2022)</div>
     </div>
+
     <div class="map-card">
       <div id="map2"></div>
       <div class="caption">Physical activity guideline adherence by state (ABS 2022)</div>
@@ -131,11 +122,9 @@
 
   <!-- SECTION 2 -->
   <h2>Lifestyle and Nutrition Patterns</h2>
-  <div class="chart-row-container">
-    <div class="chart-row">
-      <div id="heatmap" class="chart"></div>
-      <div id="donut" class="chart"></div>
-    </div>
+  <div class="chart-row">
+    <div id="heatmap" class="chart"></div>
+    <div id="donut" class="chart"></div>
   </div>
 
   <div class="text-block">
@@ -145,11 +134,9 @@
 
   <!-- SECTION 3 -->
   <h2>Psychological Wellbeing and Physical Activity</h2>
-  <div class="chart-row-container">
-    <div class="chart-row">
-      <div id="scatter" class="chart"></div>
-      <div id="stacked" class="chart"></div>
-    </div>
+  <div class="chart-row">
+    <div id="scatter" class="chart"></div>
+    <div id="stacked" class="chart"></div>
   </div>
 
   <div class="text-block">
@@ -160,7 +147,7 @@
   <script>
     const embedOpts = { actions: false, renderer: "canvas" };
 
-    // --- MAPS ---
+    // --- SECTION 1 SPECS ---
     const specMap1 = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
       "width": 680,
@@ -178,7 +165,7 @@
           }
         }
       ],
-      "config":{"legend":{"orient":"left","offset":-60},"view":{"stroke":"transparent"}}
+      "config":{"legend":{"orient":"left"},"view":{"stroke":"transparent"}}
     };
 
     const specMap2 = {
@@ -211,11 +198,74 @@
       "config":{"view":{"stroke":"transparent"}}
     };
 
-    // --- CHARTS ---
-    const heatmap = { ... }; // keep your definitions here
-    const donut = { ... };
-    const scatter = { ... };
-    const stacked = { ... };
+    const heatmap = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": "Proportion Meeting Dietary Recommendations by Age Group (2022)",
+      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/fruit_veg_data.csv"},
+      "width": 400, "height": 240,
+      "mark": "rect",
+      "encoding": {
+        "x": {"field": "AgeGroup", "type": "ordinal", "sort": ["18-24","25-34","35-44","45-54","55-64","65-74","75 years and over"],"axis": {"title": "Age Group"}},
+        "y": {"field": "RecommendationType", "type": "nominal", "sort": ["Fruit","Vegetable","Both"],"axis": {"title": "Recommendation Type"}},
+        "color": {"field": "MetPercent","type": "quantitative","title": "Meeting recommendation (%)","scale": {"scheme": "yellowgreenblue"}},
+        "tooltip": [{"field": "AgeGroup"},{"field": "RecommendationType"},{"field": "MetPercent","title": "Percent (%)"}]
+      },
+      "config": {"view": {"stroke": "transparent"}}
+    };
+
+    const donut = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "title": "Weekly Physical Activity Levels by Age Group (2022)",
+      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_activity_final.csv"},
+      "params": [{"name": "ageSelect","value": "15-17","bind": {"input": "select","options": ["15-17","18-24","25-34","35-44","45-54","55-64","65+"],"name": "Select Age Group: "}}],
+      "transform": [{"filter": "datum.Age_Group == ageSelect"}],
+      "width": 360,"height": 320,
+      "mark": {"type": "arc", "innerRadius": 70},
+      "encoding": {
+        "theta": {"field": "Proportion","type": "quantitative"},
+        "color": {"field": "Minutes_Category","type": "nominal","scale": {"domain": ["0 minutes","1-149 minutes","150-299 minutes","300+ minutes"],"range": ["#d73027","#fc8d59","#fee090","#1a9850"]},"legend": {"title": "Minutes per Week"}},
+        "order": {"field": "Minutes_Category","type": "nominal","sort": ["0 minutes","1-149 minutes","150-299 minutes","300+ minutes"]},
+        "tooltip": [{"field": "Age_Group"},{"field": "Minutes_Category"},{"field": "Proportion","title": "Proportion (%)"}]
+      },
+      "view": {"stroke": null},
+      "config": {"legend": {"orient": "right"}}
+    };
+
+    const scatter = {
+      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 680,
+      "height": 380,
+      "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
+      "mark":{"type":"point","filled":true,"size":140},
+      "encoding":{"x":{"field":"Activity_Met","type":"quantitative","title":"% meeting activity guidelines"},"y":{"field":"Distress_High","type":"quantitative","title":"% high/very high distress"},"color":{"field":"Age_Group","type":"nominal"},"tooltip":[{"field":"Age_Group"},{"field":"Activity_Met","title":"% Active"},{"field":"Distress_High","title":"% High Distress"}]},
+      "config":{"view":{"stroke":"transparent"}}
+    };
+
+    const stacked = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "description": "Stacked bars: Percent distress-level by AgeGroup, by Sex.",
+      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/psychological_distress.csv","format": {"type": "csv"}},
+      "width": 320,
+      "height": 260,
+      "title": "Distribution of Distress Level by Age Group (percent) — Males vs Females",
+      "transform": [
+        {"filter": {"field": "Sex", "oneOf": ["Males", "Females"]}},
+        {"calculate": "toNumber(datum.Percent)", "as": "PercentNum"},
+        {"calculate": "datum.DistressLevel == 'Low distress level' ? 1 : datum.DistressLevel == 'Moderate distress level' ? 2 : datum.DistressLevel == 'High distress level' ? 3 : 4","as": "DistressRank"}
+      ],
+      "facet": {"row": {"field": "Sex","type": "nominal","sort": ["Males","Females"],"header": {"labelAngle": 0,"title": null}}},
+      "spec": {
+        "mark": {"type": "bar","cornerRadiusEnd": 2},
+        "encoding": {
+          "y": {"field": "AgeGroup","type": "ordinal","sort": {"domain": ["18–24","25–34","35–44","45–54","55–64","65 years and over"]},"axis": {"title": null}},
+          "x": {"field": "PercentNum","type": "quantitative","stack": "zero","axis": {"title": "Percent (%)"}},
+          "color": {"field": "DistressLevel","type": "nominal","scale": {"domain": ["Low distress level","Moderate distress level","High distress level","Very high distress level"],"range": ["#4daf4a","#377eb8","#ff7f00","#e41a1c"]},"legend": {"title": "Distress level","orient": "right"}},
+          "order": {"field": "DistressRank","type": "quantitative","sort": "ascending"},
+          "tooltip": [{"field": "Sex","type": "nominal"},{"field": "AgeGroup","type": "nominal"},{"field": "DistressLevel","type": "nominal"},{"field": "PercentNum","type": "quantitative","title": "Percent"}]
+        }
+      },
+      "resolve": {"legend": {"color": "shared"}}
+    };
 
     vegaEmbed('#map1', specMap1, embedOpts);
     vegaEmbed('#map2', specMap2, embedOpts);
