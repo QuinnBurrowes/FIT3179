@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Physical, Mental, and Combined Health Patterns in Australia</title>
+  <title>Australian Maps — Physical & Mental Health Patterns</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
@@ -12,55 +12,35 @@
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       background: #fafafa;
       margin: 0;
-      padding: 0;
       color: #111827;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     header {
-      background: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      padding: 30px 20px 20px 20px;
-      margin-bottom: 30px;
+      text-align: center;
+      margin: 24px 0 16px 0;
+      max-width: 800px;
     }
 
     h1 {
-      margin-bottom: 10px;
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: #1f2937;
-    }
-
-    .lead {
-      font-size: 1rem;
-      color: #4b5563;
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
-
-    .section-title {
+      margin-bottom: 8px;
       font-weight: 600;
-      font-size: 1.2rem;
-      margin-top: 40px;
-      color: #1e3a8a;
     }
 
-    .section-text {
-      max-width: 1000px;
-      margin: 10px auto 20px auto;
-      font-size: 0.95rem;
+    p.lead {
       color: #374151;
-      line-height: 1.6;
+      font-size: 15px;
+      margin-bottom: 0;
     }
 
     .top-row {
       display: flex;
-      gap: 24px;
-      justify-content: center;
-      align-items: flex-start;
       flex-wrap: wrap;
-      margin-bottom: 40px;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 20px;
     }
 
     .map-card {
@@ -70,14 +50,7 @@
       padding: 12px;
       width: 680px;
       box-sizing: border-box;
-      text-align: left;
-    }
-
-    .map-caption {
       text-align: center;
-      margin-top: 10px;
-      font-size: 13px;
-      color: #6b7280;
     }
 
     .chart-card {
@@ -85,22 +58,27 @@
       border-radius: 8px;
       box-shadow: 0 6px 18px rgba(15,23,42,0.06);
       padding: 12px;
-      margin-top: 12px;
       width: calc(100% - 36px);
       max-width: 1380px;
+      margin: 12px auto 36px auto;
       box-sizing: border-box;
-      margin-left: auto;
-      margin-right: auto;
+      text-align: center;
     }
 
     .caption {
       margin-top: 8px;
       font-size: 13px;
       color: #374151;
-      text-align: center;
     }
 
-    /* responsive: stack maps on small screens */
+    .map-desc {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #4b5563;
+      text-align: left;
+      padding: 0 10px;
+    }
+
     @media (max-width: 1450px) {
       .map-card { width: 48%; }
     }
@@ -113,50 +91,37 @@
   <header>
     <h1>Physical, Mental, and Combined Health Patterns in Australia</h1>
     <p class="lead">
-      A visual exploration of state-level health indicators across Australia, comparing mental health conditions, 
-      physical activity participation, and leading causes of death.  
-      <br> Data sources: Australian Bureau of Statistics (National Health Survey 2022) and AIHW.
+      Explore how Australians across states meet physical activity guidelines and experience mental health conditions.  
+      Data derived from <b>ABS National Health Survey 2022</b> and <b>AIHW reports</b>.
     </p>
   </header>
-
-  <section>
-    <h2 class="section-title">Mental vs Physical Health Across States</h2>
-    <p class="section-text">
-      The maps below illustrate how Australians fare across different health dimensions.  
-      The **left map** highlights the percentage of adults experiencing mental and behavioural conditions,  
-      while the **right map** shows the percentage meeting national physical activity guidelines.  
-      Darker shades indicate higher proportions.
-    </p>
-  </section>
 
   <div class="top-row">
     <div class="map-card">
       <div id="map1"></div>
-      <div class="map-caption">Map A — Prevalence of mental and behavioural conditions</div>
+      <div class="map-desc">
+        This map shows the percentage of adults in each state experiencing mental health conditions.
+        Darker shades indicate higher prevalence.
+      </div>
+      <div class="caption">Map A — Mental conditions (<code>mental_state_real.csv</code>)</div>
     </div>
 
     <div class="map-card">
       <div id="map2"></div>
-      <div class="map-caption">Map B — Adults meeting physical activity guidelines</div>
+      <div class="map-desc">
+        This map displays the proportion of adults meeting physical activity guidelines across states.
+        Higher percentages are shaded darker green.
+      </div>
+      <div class="caption">Map B — Physical activity (<code>physical_state.csv</code>)</div>
     </div>
   </div>
 
-  <section>
-    <h2 class="section-title">Trends in Leading Causes of Death</h2>
-    <p class="section-text">
-      This time series below highlights key causes of death in Australia over time.  
-      Each line represents a major cause, showing how mortality trends have shifted due to changes in health behaviours, 
-      disease prevention, and ageing demographics.
-    </p>
-  </section>
-
   <div class="chart-card">
     <div id="deaths"></div>
-    <div class="caption">Causes of death (Source: <code>death_causes_old.csv</code>)</div>
+    <div class="caption">Causes of death time series (<code>death_causes_old.csv</code>)</div>
   </div>
 
   <script>
-    // --- Spec 1: Mental health map ---
     const specMap1 = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
       "width": 680,
@@ -181,7 +146,13 @@
           ],
           "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
           "encoding":{
-            "color":{"field":"value","type":"quantitative","title":"% adults (mental)","scale":{"scheme":"blues"}},
+            "color":{
+              "field":"value",
+              "type":"quantitative",
+              "title":"% adults (mental)",
+              "scale":{"scheme":"blues"},
+              "legend":{"orient":"left"}   <!-- legend moved left -->
+            },
             "tooltip":[
               {"field":"properties.STATE_NAME","title":"State"},
               {"field":"value","title":"% adults (mental)"}
@@ -192,7 +163,6 @@
       "config": {"view":{"stroke":"transparent"}}
     };
 
-    // --- Spec 2: Physical health map ---
     const specMap2 = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
       "width": 680,
@@ -217,7 +187,12 @@
           ],
           "mark":{"type":"geoshape","stroke":"white","strokeWidth":1},
           "encoding":{
-            "color":{"field":"value","type":"quantitative","title":"% adults (physical)","scale":{"scheme":"greens"}},
+            "color":{
+              "field":"value",
+              "type":"quantitative",
+              "title":"% adults (physical)",
+              "scale":{"scheme":"greens"}
+            },
             "tooltip":[
               {"field":"properties.STATE_NAME","title":"State"},
               {"field":"value","title":"% adults (physical)"}
@@ -228,7 +203,6 @@
       "config": {"view":{"stroke":"transparent"}}
     };
 
-    // --- Spec 3: Causes of death chart ---
     const specDeaths = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
       "width": 1380,
@@ -244,11 +218,11 @@
       "config":{"view":{"stroke":"transparent"}}
     };
 
-    // Render all visuals
     const embedOpts = {actions: false, renderer: "canvas"};
-    vegaEmbed('#map1', specMap1, embedOpts);
-    vegaEmbed('#map2', specMap2, embedOpts);
-    vegaEmbed('#deaths', specDeaths, embedOpts);
+
+    vegaEmbed('#map1', specMap1, embedOpts).catch(console.error);
+    vegaEmbed('#map2', specMap2, embedOpts).catch(console.error);
+    vegaEmbed('#deaths', specDeaths, embedOpts).catch(console.error);
   </script>
 </body>
 </html>
