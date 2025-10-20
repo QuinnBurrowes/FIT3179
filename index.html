@@ -55,15 +55,18 @@
       margin: 12px auto;
     }
 
-    /* Center section 2 horizontally */
+    /* Center section 2 horizontally:
+       - Set container width = heatmap width (400) + donut width (360) + gap (420) + small padding allowance (20)
+       - That totals ~1200px, so container is centered (margin: 0 auto)
+    */
     .section-2 {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 420px; /* keeps large horizontal spacing */
-      flex-wrap: wrap;
-      width: fit-content; /* <<< key change: only as wide as the charts */
-      margin: 0 auto 20px auto; /* <<< centers the group */
+      gap: 420px; /* horizontal space between the two charts */
+      flex-wrap: nowrap;
+      width: 1200px; /* fixed container width to align with maps */
+      margin: 0 auto 20px auto;
     }
 
     /* Chart row for section 3 */
@@ -91,13 +94,13 @@
 
     @media (max-width: 1450px) {
       .map-card { width: 48%; }
-      .section-2, .chart-row { gap: 180px; }
+      .section-2, .chart-row { gap: 180px; width: auto; justify-content: center; flex-wrap: wrap; }
     }
 
     @media (max-width: 900px) {
       .map-card { width: 100%; }
       .chart { width: 100%; }
-      .section-2, .chart-row { gap: 80px; }
+      .section-2, .chart-row { gap: 80px; width: auto; }
     }
   </style>
 </head>
@@ -225,7 +228,7 @@
       "config": { "legend": { "orient": "right" }, "view": { "stroke": "transparent" } }
     };
 
-    /* ---------------- SECTION 2 & 3 (from your existing specs) ---------------- */
+    /* ---------------- SECTION 2 & 3 SPECS ---------------- */
     const specDeaths = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes.csv" },
@@ -337,7 +340,6 @@
         "axis": {"domain": false, "grid": false, "labels": false, "ticks": false}
       }
     };
-
 
     const specScatter = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
