@@ -140,14 +140,14 @@
   </div>
 
   <div class="text-block">
-    Physical activity is linked to reduced psychological distress, but this connection differs by age.  
-    Understanding these differences can guide targeted mental health and fitness initiatives.
+    Physical activity is linked to reduced psychological distress, but this connection differs by age and gender.  
+    These relationships can guide targeted wellbeing and health promotion strategies.
   </div>
 
   <script>
     const embedOpts = { actions: false, renderer: "canvas" };
 
-    // MAP 1
+    // --- SECTION 1 SPECS ---
     const specMap1 = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
       "width": 680,
@@ -171,7 +171,6 @@
       "config":{"view":{"stroke":"transparent"}}
     };
 
-    // MAP 2
     const specMap2 = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
       "width": 680,
@@ -195,7 +194,6 @@
       "config":{"view":{"stroke":"transparent"}}
     };
 
-    // DEATHS
     const specDeaths = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
       "width": 1380,
@@ -211,7 +209,7 @@
       "config":{"view":{"stroke":"transparent"}}
     };
 
-    // HEATMAP
+    // --- SECTION 2 SPECS ---
     const heatmap = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "title": "Proportion Meeting Dietary Recommendations by Age Group (2022)",
@@ -227,7 +225,6 @@
       "config": {"view": {"stroke": "transparent"}}
     };
 
-    // DONUT
     const donut = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "title": "Weekly Physical Activity Levels by Age Group (2022)",
@@ -250,37 +247,105 @@
       "config": {"legend": {"orient": "right"}}
     };
 
-    // SCATTER
+    // --- SECTION 3 SPECS (YOUR SNIPPETS) ---
     const scatter = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Relationship Between Physical Activity and Psychological Distress by Age Group",
-      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
-      "mark": {"type": "circle", "size": 120, "opacity": 0.8},
-      "encoding": {
-        "x": {"field": "Physical Activity (%)", "type": "quantitative"},
-        "y": {"field": "Psychological Distress (%)", "type": "quantitative"},
-        "color": {"field": "Age Group", "type": "nominal"},
-        "tooltip": [{"field": "Age Group"},{"field": "Physical Activity (%)"},{"field": "Psychological Distress (%)"}]
+      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 680,
+      "height": 380,
+      "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
+      "mark":{"type":"point","filled":true,"size":140},
+      "encoding":{
+        "x":{"field":"Activity_Met","type":"quantitative","title":"% meeting activity guidelines"},
+        "y":{"field":"Distress_High","type":"quantitative","title":"% high/very high distress"},
+        "color":{"field":"Age_Group","type":"nominal"},
+        "tooltip":[
+          {"field":"Age_Group"},{"field":"Activity_Met","title":"% Active"},{"field":"Distress_High","title":"% High Distress"}
+        ]
       },
-      "width": 400,"height": 320
+      "config":{"view":{"stroke":"transparent"}}
     };
 
-    // STACKED
     const stacked = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "title": "Levels of Psychological Distress by Age Group",
-      "data": {"url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/distress_stacked.csv"},
-      "mark": "bar",
-      "width": 400,"height": 320,
-      "encoding": {
-        "x": {"field": "Age Group", "type": "ordinal"},
-        "y": {"field": "Proportion", "type": "quantitative", "stack": "normalize","title": "Proportion"},
-        "color": {"field": "Distress Level", "type": "nominal"},
-        "tooltip": [{"field": "Age Group"},{"field": "Distress Level"},{"field": "Proportion"}]
-      }
+      "description": "Stacked bars: Percent distress-level by AgeGroup, by Sex.",
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/refs/heads/main/psychological_distress.csv",
+        "format": {"type": "csv"}
+      },
+      "width": 320,
+      "height": 260,
+      "title": "Distribution of Distress Level by Age Group (percent) — Males vs Females",
+      "transform": [
+        {"filter": {"field": "Sex", "oneOf": ["Males", "Females"]}},
+        {"calculate": "toNumber(datum.Percent)", "as": "PercentNum"},
+        {
+          "calculate": "datum.DistressLevel == 'Low distress level' ? 1 : datum.DistressLevel == 'Moderate distress level' ? 2 : datum.DistressLevel == 'High distress level' ? 3 : 4",
+          "as": "DistressRank"
+        }
+      ],
+      "facet": {
+        "column": {
+          "field": "Sex",
+          "type": "nominal",
+          "sort": ["Males", "Females"],
+          "header": {"labelAngle": 0, "title": null}
+        }
+      },
+      "spec": {
+        "mark": {"type": "bar", "cornerRadiusEnd": 2},
+        "encoding": {
+          "y": {
+            "field": "AgeGroup",
+            "type": "ordinal",
+            "sort": {
+              "domain": [
+                "18–24",
+                "25–34",
+                "35–44",
+                "45–54",
+                "55–64",
+                "65 years and over"
+              ]
+            },
+            "axis": {"title": null}
+          },
+          "x": {
+            "field": "PercentNum",
+            "type": "quantitative",
+            "stack": "zero",
+            "axis": {"title": "Percent (%)"}
+          },
+          "color": {
+            "field": "DistressLevel",
+            "type": "nominal",
+            "scale": {
+              "domain": [
+                "Low distress level",
+                "Moderate distress level",
+                "High distress level",
+                "Very high distress level"
+              ],
+              "range": ["#4daf4a", "#377eb8", "#ff7f00", "#e41a1c"]
+            },
+            "legend": {"title": "Distress level", "orient": "right"}
+          },
+          "order": {
+            "field": "DistressRank",
+            "type": "quantitative",
+            "sort": "ascending"
+          },
+          "tooltip": [
+            {"field": "Sex", "type": "nominal"},
+            {"field": "AgeGroup", "type": "nominal"},
+            {"field": "DistressLevel", "type": "nominal"},
+            {"field": "PercentNum", "type": "quantitative", "title": "Percent"}
+          ]
+        }
+      },
+      "resolve": {"legend": {"color": "shared"}}
     };
 
-    // Render all visuals
+    // --- EMBED ALL VISUALS ---
     vegaEmbed('#map1', specMap1, embedOpts);
     vegaEmbed('#map2', specMap2, embedOpts);
     vegaEmbed('#deaths', specDeaths, embedOpts);
