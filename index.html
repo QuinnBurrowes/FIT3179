@@ -253,7 +253,7 @@
         {"calculate": "toNumber(datum.Percent)", "as": "PercentNum"},
         {"calculate": "datum.DistressLevel == 'Low distress level' ? 1 : datum.DistressLevel == 'Moderate distress level' ? 2 : datum.DistressLevel == 'High distress level' ? 3 : 4","as": "DistressRank"}
       ],
-      "facet": {"column": {"field": "Sex","type": "nominal","sort": ["Males","Females"],"header": {"labelAngle": 0,"title": null}}},
+      "facet": {"row": {"field": "Sex","type": "nominal","sort": ["Males","Females"],"header": {"labelAngle": 0,"title": null}}},
       "spec": {
         "mark": {"type": "bar","cornerRadiusEnd": 2},
         "encoding": {
