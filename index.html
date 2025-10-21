@@ -305,18 +305,77 @@
     };
 
     const specScatter = {
-      "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "width": 520,
       "height": 400,
-      "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
-      "mark":{"type":"point","filled":true,"size":140},
-      "encoding":{
-        "x":{"field":"Activity_Met","type":"quantitative","title":"% meeting activity guidelines"},
-        "y":{"field":"Distress_High","type":"quantitative","title":"% high/very high distress"},
-        "color":{"field":"Age_Group","type":"nominal"}
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"
       },
-      "config":{"view":{"stroke":"transparent"}}
+      "layer": [
+        {
+          "mark": { "type": "point", "filled": true, "size": 140 },
+          "encoding": {
+            "x": { "field": "Activity_Met", "type": "quantitative", "title": "% meeting activity guidelines" },
+            "y": { "field": "Distress_High", "type": "quantitative", "title": "% high/very high distress" },
+            "color": { "field": "Age_Group", "type": "nominal" }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "x1": 22,
+                "y1": 20,
+                "x2": 17.5,
+                "y2": 20,
+                "label": "Outlier:\nHigh activity, high distress for 18-24"
+              },
+              {
+                "x1": 15,
+                "y1": 15,
+                "x2": 15,
+                "y2": 13.5,
+                "label": "Trend:\nLower activity,\nhigher distress"
+              }
+            ]
+          },
+          "layer": [
+            {
+              "mark": {
+                "type": "rule",
+                "stroke": "#555",
+                "strokeWidth": 1.5
+              },
+              "encoding": {
+                "x": { "field": "x1", "type": "quantitative" },
+                "x2": { "field": "x2" },
+                "y": { "field": "y1", "type": "quantitative" },
+                "y2": { "field": "y2" }
+              }
+            },
+            {
+              "mark": {
+                "type": "text",
+                "align": "right",
+                "baseline": "middle",
+                "dx": -6,
+                "dy": 0,
+                "fontSize": 12,
+                "fontWeight": "bold",
+                "color": "#111827"
+              },
+              "encoding": {
+                "x": { "field": "x2", "type": "quantitative" },
+                "y": { "field": "y2", "type": "quantitative" },
+                "text": { "field": "label" }
+              }
+            }
+          ]
+        }
+      ],
+      "config": { "view": { "stroke": "transparent" } }
     };
+
 
     const specStacked = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
