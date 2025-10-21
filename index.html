@@ -234,43 +234,85 @@
       "config": { "legend": { "orient": "right" }, "view": { "stroke": "transparent" } }
     };
 
-    /* DEATHS WITH TOOLTIP */
+    /* DEATHS */
     const specDeaths = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes.csv" },
+      "data": { 
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes.csv" 
+      },
       "width": 1000,
       "height": 380,
       "layer": [
         {
           "mark": "line",
           "encoding": {
-            "x": { "field": "Year", "type": "quantitative", "axis": { "format": "d" }, "title": "Year" },
-            "y": { "field": "Deaths", "type": "quantitative", "title": "Deaths" },
-            "color": { "field": "Cause", "type": "nominal", "title": "Cause of Death" },
-            "tooltip": [
-              { "field": "Year", "type": "quantitative" },
-              { "field": "Cause", "type": "nominal" },
-              { "field": "Deaths", "type": "quantitative" }
-            ]
+            "x": { 
+              "field": "Year", 
+              "type": "quantitative", 
+              "axis": { "format": "d" },
+              "title": "Year"
+            },
+            "y": { 
+              "field": "Deaths", 
+              "type": "quantitative", 
+              "title": "Deaths"
+            },
+            "color": { 
+              "field": "Cause", 
+              "type": "nominal", 
+              "title": "Cause of Death" 
+            }
           }
         },
         {
           "data": {
             "values": [
-              { "x1": 2016.5, "y1": 14500, "x2": 2017, "y2": 14000, "label": "Dementia trends to overtake\nheart disease" }
+              {
+                "x1": 2016.5,
+                "y1": 14500,
+                "x2": 2017,
+                "y2": 14000,
+                "label": "Dementia trends to overtake\nheart disease"
+              }
             ]
           },
           "layer": [
-            { "mark": { "type": "rule", "stroke": "#444", "strokeWidth": 1.5 },
-              "encoding": { "x": { "field": "x1" }, "x2": { "field": "x2" }, "y": { "field": "y1" }, "y2": { "field": "y2" } }
+            {
+              "mark": {
+                "type": "rule",
+                "stroke": "#444",
+                "strokeWidth": 1.5
+              },
+              "encoding": {
+                "x": { "field": "x1", "type": "quantitative" },
+                "x2": { "field": "x2" },
+                "y": { "field": "y1", "type": "quantitative" },
+                "y2": { "field": "y2" }
+              }
             },
-            { "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -6, "fontSize": 13, "fontWeight": "bold", "color": "#111827" },
-              "encoding": { "x": { "field": "x1" }, "y": { "field": "y1" }, "text": { "field": "label" } }
+            {
+              "mark": {
+                "type": "text",
+                "align": "right",
+                "baseline": "middle",
+                "dx": -6,
+                "dy": 0,
+                "fontSize": 13,
+                "fontWeight": "bold",
+                "color": "#111827"
+              },
+              "encoding": {
+                "x": { "field": "x1", "type": "quantitative" },
+                "y": { "field": "y1", "type": "quantitative" },
+                "text": { "field": "label" }
+              }
             }
           ]
         }
       ],
-      "config": { "view": { "stroke": "transparent" } }
+      "config": {
+        "view": { "stroke": "transparent" }
+      }
     };
 
     /* HEATMAP */
@@ -315,33 +357,70 @@
     /* SCATTER */
     const specScatter = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 520, "height": 400,
-      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv" },
+      "width": 520,
+      "height": 400,
+      "data": {
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"
+      },
       "layer": [
         {
           "mark": { "type": "point", "filled": true, "size": 140 },
           "encoding": {
             "x": { "field": "Activity_Met", "type": "quantitative", "title": "% meeting activity guidelines" },
             "y": { "field": "Distress_High", "type": "quantitative", "title": "% high/very high distress" },
-            "color": { "field": "Age_Group", "type": "nominal" },
-            "tooltip": [
-              { "field": "Age_Group" },
-              { "field": "Activity_Met", "title": "% Meeting Activity Guidelines" },
-              { "field": "Distress_High", "title": "% High Distress" }
-            ]
+            "color": { "field": "Age_Group", "type": "nominal" }
           }
         },
         {
           "data": {
             "values": [
-              { "x1": 22, "y1": 20, "x2": 17.5, "y2": 20, "label": "Outlier:\nHigh activity, high distress for 18-24" },
-              { "x1": 15, "y1": 15, "x2": 15, "y2": 13.5, "label": "Trend:\nLower activity,\nhigher distress" }
+              {
+                "x1": 22,
+                "y1": 20,
+                "x2": 17.5,
+                "y2": 20,
+                "label": "Outlier:\nHigh activity, high distress for 18-24"
+              },
+              {
+                "x1": 15,
+                "y1": 15,
+                "x2": 15,
+                "y2": 13.5,
+                "label": "Trend:\nLower activity,\nhigher distress"
+              }
             ]
           },
           "layer": [
-            { "mark": { "type": "rule", "stroke": "#555", "strokeWidth": 1.5 }, "encoding": { "x": { "field": "x1" }, "x2": { "field": "x2" }, "y": { "field": "y1" }, "y2": { "field": "y2" } } },
-            { "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -6, "fontSize": 12, "fontWeight": "bold", "color": "#111827" },
-              "encoding": { "x": { "field": "x2" }, "y": { "field": "y2" }, "text": { "field": "label" } } }
+            {
+              "mark": {
+                "type": "rule",
+                "stroke": "#555",
+                "strokeWidth": 1.5
+              },
+              "encoding": {
+                "x": { "field": "x1", "type": "quantitative" },
+                "x2": { "field": "x2" },
+                "y": { "field": "y1", "type": "quantitative" },
+                "y2": { "field": "y2" }
+              }
+            },
+            {
+              "mark": {
+                "type": "text",
+                "align": "right",
+                "baseline": "middle",
+                "dx": -6,
+                "dy": 0,
+                "fontSize": 12,
+                "fontWeight": "bold",
+                "color": "#111827"
+              },
+              "encoding": {
+                "x": { "field": "x2", "type": "quantitative" },
+                "y": { "field": "y2", "type": "quantitative" },
+                "text": { "field": "label" }
+              }
+            }
           ]
         }
       ],
