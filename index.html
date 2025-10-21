@@ -82,11 +82,7 @@
       margin-bottom: 20px;
     }
 
-    /* slightly wider charts for section 2 and 3 */
-    .chart {
-      width: 520px;
-      max-width: 100%;
-    }
+    .chart { width: 520px; max-width: 100%; }
 
     .caption, .text-block {
       margin-top: 8px;
@@ -115,8 +111,7 @@
   <header>
     <h1>Physical, Mental, and Lifestyle Health in Australia</h1>
     <p class="lead">
-      Visual exploration of national health indicators across physical activity, mental wellbeing, and lifestyle factors.
-      <br>
+      Visual exploration of national health indicators across physical activity, mental wellbeing, and lifestyle factors.<br>
       Data sources: Australian Bureau of Statistics (National Health Survey 2022) and AIHW.
     </p>
   </header>
@@ -128,7 +123,6 @@
       <h3>Mental Health Conditions by State (2022)</h3>
       <div id="map1"></div>
     </div>
-
     <div class="map-card">
       <h3>Physical Activity Adherence by State (2022)</h3>
       <div id="map2"></div>
@@ -152,7 +146,6 @@
       <h3>Dietary Recommendation Compliance by Age Group</h3>
       <div id="heatmap"></div>
     </div>
-
     <div class="chart">
       <h3>Weekly Physical Activity Levels by Age Group</h3>
       <div id="donut"></div>
@@ -171,7 +164,6 @@
       <h3>Relationship Between Physical Activity and Distress</h3>
       <div id="scatter"></div>
     </div>
-
     <div class="chart">
       <h3>Psychological Distress Levels by Age and Gender</h3>
       <div id="stacked"></div>
@@ -185,7 +177,7 @@
   <script>
     const embedOpts = { actions: false, renderer: "canvas" };
 
-    /* ---------------- SECTION 1 MAPS ---------------- */
+    /* MAPS */
     const specMap1 = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "width": 680, "height": 420,
@@ -194,16 +186,13 @@
         { "data": { "graticule": { "step": [30, 30] } }, "mark": { "type": "geoshape", "stroke": "#ddd", "strokeWidth": 0.4 } },
         {
           "data": { "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json", "format": { "type": "json", "property": "features" } },
-          "transform": [
-            {
-              "lookup": "properties.STATE_NAME",
-              "from": {
-                "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/mental_state_real.csv" },
-                "key": "STATE_NAME",
-                "fields": ["value"]
-              }
+          "transform": [{
+            "lookup": "properties.STATE_NAME",
+            "from": {
+              "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/mental_state_real.csv" },
+              "key": "STATE_NAME", "fields": ["value"]
             }
-          ],
+          }],
           "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 1 },
           "encoding": {
             "color": { "field": "value", "type": "quantitative", "title": "% adults (mental)", "scale": { "scheme": "blues" } },
@@ -225,16 +214,13 @@
         { "data": { "graticule": { "step": [30, 30] } }, "mark": { "type": "geoshape", "stroke": "#ddd", "strokeWidth": 0.4 } },
         {
           "data": { "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json", "format": { "type": "json", "property": "features" } },
-          "transform": [
-            {
-              "lookup": "properties.STATE_NAME",
-              "from": {
-                "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_state.csv" },
-                "key": "STATE_NAME",
-                "fields": ["value"]
-              }
+          "transform": [{
+            "lookup": "properties.STATE_NAME",
+            "from": {
+              "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_state.csv" },
+              "key": "STATE_NAME", "fields": ["value"]
             }
-          ],
+          }],
           "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 1 },
           "encoding": {
             "color": { "field": "value", "type": "quantitative", "title": "% adults (physical)", "scale": { "scheme": "greens" } },
@@ -248,204 +234,121 @@
       "config": { "legend": { "orient": "right" }, "view": { "stroke": "transparent" } }
     };
 
-    /* ---------------- OTHER CHARTS ---------------- */
+    /* DEATHS WITH TOOLTIP */
     const specDeaths = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "data": { 
-        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes.csv" 
-      },
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes.csv" },
       "width": 1000,
       "height": 380,
       "layer": [
         {
           "mark": "line",
           "encoding": {
-            "x": { 
-              "field": "Year", 
-              "type": "quantitative", 
-              "axis": { "format": "d" },
-              "title": "Year"
-            },
-            "y": { 
-              "field": "Deaths", 
-              "type": "quantitative", 
-              "title": "Deaths"
-            },
-            "color": { 
-              "field": "Cause", 
-              "type": "nominal", 
-              "title": "Cause of Death" 
-            }
+            "x": { "field": "Year", "type": "quantitative", "axis": { "format": "d" }, "title": "Year" },
+            "y": { "field": "Deaths", "type": "quantitative", "title": "Deaths" },
+            "color": { "field": "Cause", "type": "nominal", "title": "Cause of Death" },
+            "tooltip": [
+              { "field": "Year", "type": "quantitative" },
+              { "field": "Cause", "type": "nominal" },
+              { "field": "Deaths", "type": "quantitative" }
+            ]
           }
         },
         {
           "data": {
             "values": [
-              {
-                "x1": 2016.5,
-                "y1": 14500,
-                "x2": 2017,
-                "y2": 14000,
-                "label": "Dementia trends to overtake\nheart disease"
-              }
+              { "x1": 2016.5, "y1": 14500, "x2": 2017, "y2": 14000, "label": "Dementia trends to overtake\nheart disease" }
             ]
           },
           "layer": [
-            {
-              "mark": {
-                "type": "rule",
-                "stroke": "#444",
-                "strokeWidth": 1.5
-              },
-              "encoding": {
-                "x": { "field": "x1", "type": "quantitative" },
-                "x2": { "field": "x2" },
-                "y": { "field": "y1", "type": "quantitative" },
-                "y2": { "field": "y2" }
-              }
+            { "mark": { "type": "rule", "stroke": "#444", "strokeWidth": 1.5 },
+              "encoding": { "x": { "field": "x1" }, "x2": { "field": "x2" }, "y": { "field": "y1" }, "y2": { "field": "y2" } }
             },
-            {
-              "mark": {
-                "type": "text",
-                "align": "right",
-                "baseline": "middle",
-                "dx": -6,
-                "dy": 0,
-                "fontSize": 13,
-                "fontWeight": "bold",
-                "color": "#111827"
-              },
-              "encoding": {
-                "x": { "field": "x1", "type": "quantitative" },
-                "y": { "field": "y1", "type": "quantitative" },
-                "text": { "field": "label" }
-              }
+            { "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -6, "fontSize": 13, "fontWeight": "bold", "color": "#111827" },
+              "encoding": { "x": { "field": "x1" }, "y": { "field": "y1" }, "text": { "field": "label" } }
             }
           ]
         }
       ],
-      "config": {
-        "view": { "stroke": "transparent" }
-      }
+      "config": { "view": { "stroke": "transparent" } }
     };
 
-
+    /* HEATMAP */
     const specHeatmap = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/fruit_veg_data.csv" },
-      "width": 460,
-      "height": 260,
+      "width": 460, "height": 260,
       "mark": "rect",
       "encoding": {
         "x": { "field": "AgeGroup", "type": "ordinal", "axis": { "title": "Age Group" } },
         "y": { "field": "RecommendationType", "type": "nominal", "axis": { "title": "Recommendation Type" } },
-        "color": { "field": "MetPercent", "type": "quantitative", "title": "Meeting (%)", "scale": { "scheme": "yellowgreenblue" } }
+        "color": { "field": "MetPercent", "type": "quantitative", "title": "Meeting (%)", "scale": { "scheme": "yellowgreenblue" } },
+        "tooltip": [
+          { "field": "AgeGroup" },
+          { "field": "RecommendationType" },
+          { "field": "MetPercent", "title": "% Meeting Recommendation" }
+        ]
       },
       "config": { "view": { "stroke": "transparent" } }
     };
 
+    /* DONUT */
     const specDonut = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/physical_activity_final.csv" },
-      "params": [
-        {
-          "name": "ageSelect",
-          "value": "15-17",
-          "bind": { "input": "select", "options": ["15-17","18-24","25-34","35-44","45-54","55-64","65+"], "name": "Select Age Group: " }
-        }
-      ],
+      "params": [{ "name": "ageSelect", "value": "15-17", "bind": { "input": "select", "options": ["15-17","18-24","25-34","35-44","45-54","55-64","65+"], "name": "Select Age Group: " } }],
       "transform": [{ "filter": "datum.Age_Group == ageSelect" }],
-      "width": 420,
-      "height": 340,
+      "width": 420, "height": 340,
       "mark": { "type": "arc", "innerRadius": 70 },
       "encoding": {
         "theta": { "field": "Proportion", "type": "quantitative" },
-        "color": {
-          "field": "Minutes_Category",
-          "type": "nominal",
-          "scale": {
-            "domain": ["0 minutes", "1-149 minutes", "150-299 minutes", "300+ minutes"],
-            "range": ["#d73027", "#fc8d59", "#fee090", "#1a9850"]
-          },
-          "legend": { "title": "Minutes per Week" }
-        }
+        "color": { "field": "Minutes_Category", "type": "nominal", "scale": { "domain": ["0 minutes","1-149 minutes","150-299 minutes","300+ minutes"], "range": ["#d73027","#fc8d59","#fee090","#1a9850"] }, "legend": { "title": "Minutes per Week" } },
+        "tooltip": [
+          { "field": "Age_Group", "title": "Age Group" },
+          { "field": "Minutes_Category", "title": "Minutes per Week" },
+          { "field": "Proportion", "title": "Proportion (%)" }
+        ]
       },
       "config": { "view": { "stroke": null } }
     };
 
+    /* SCATTER */
     const specScatter = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 520,
-      "height": 400,
-      "data": {
-        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"
-      },
+      "width": 520, "height": 400,
+      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv" },
       "layer": [
         {
           "mark": { "type": "point", "filled": true, "size": 140 },
           "encoding": {
             "x": { "field": "Activity_Met", "type": "quantitative", "title": "% meeting activity guidelines" },
             "y": { "field": "Distress_High", "type": "quantitative", "title": "% high/very high distress" },
-            "color": { "field": "Age_Group", "type": "nominal" }
+            "color": { "field": "Age_Group", "type": "nominal" },
+            "tooltip": [
+              { "field": "Age_Group" },
+              { "field": "Activity_Met", "title": "% Meeting Activity Guidelines" },
+              { "field": "Distress_High", "title": "% High Distress" }
+            ]
           }
         },
         {
           "data": {
             "values": [
-              {
-                "x1": 22,
-                "y1": 20,
-                "x2": 17.5,
-                "y2": 20,
-                "label": "Outlier:\nHigh activity, high distress for 18-24"
-              },
-              {
-                "x1": 15,
-                "y1": 15,
-                "x2": 15,
-                "y2": 13.5,
-                "label": "Trend:\nLower activity,\nhigher distress"
-              }
+              { "x1": 22, "y1": 20, "x2": 17.5, "y2": 20, "label": "Outlier:\nHigh activity, high distress for 18-24" },
+              { "x1": 15, "y1": 15, "x2": 15, "y2": 13.5, "label": "Trend:\nLower activity,\nhigher distress" }
             ]
           },
           "layer": [
-            {
-              "mark": {
-                "type": "rule",
-                "stroke": "#555",
-                "strokeWidth": 1.5
-              },
-              "encoding": {
-                "x": { "field": "x1", "type": "quantitative" },
-                "x2": { "field": "x2" },
-                "y": { "field": "y1", "type": "quantitative" },
-                "y2": { "field": "y2" }
-              }
-            },
-            {
-              "mark": {
-                "type": "text",
-                "align": "right",
-                "baseline": "middle",
-                "dx": -6,
-                "dy": 0,
-                "fontSize": 12,
-                "fontWeight": "bold",
-                "color": "#111827"
-              },
-              "encoding": {
-                "x": { "field": "x2", "type": "quantitative" },
-                "y": { "field": "y2", "type": "quantitative" },
-                "text": { "field": "label" }
-              }
-            }
+            { "mark": { "type": "rule", "stroke": "#555", "strokeWidth": 1.5 }, "encoding": { "x": { "field": "x1" }, "x2": { "field": "x2" }, "y": { "field": "y1" }, "y2": { "field": "y2" } } },
+            { "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -6, "fontSize": 12, "fontWeight": "bold", "color": "#111827" },
+              "encoding": { "x": { "field": "x2" }, "y": { "field": "y2" }, "text": { "field": "label" } } }
           ]
         }
       ],
       "config": { "view": { "stroke": "transparent" } }
     };
 
-
+    /* STACKED */
     const specStacked = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/psychological_distress.csv" },
@@ -459,22 +362,22 @@
         "encoding": {
           "y": { "field": "AgeGroup", "type": "ordinal" },
           "x": { "field": "PercentNum", "type": "quantitative" },
-          "color": {
-            "field": "DistressLevel",
-            "type": "nominal",
-            "scale": {
-              "domain": ["Low distress level", "Moderate distress level", "High distress level", "Very high distress level"],
-              "range": ["#4daf4a", "#377eb8", "#ff7f00", "#e41a1c"]
-            }
-          }
+          "color": { "field": "DistressLevel", "type": "nominal",
+            "scale": { "domain": ["Low distress level","Moderate distress level","High distress level","Very high distress level"],
+              "range": ["#4daf4a","#377eb8","#ff7f00","#e41a1c"] } },
+          "tooltip": [
+            { "field": "Sex" },
+            { "field": "AgeGroup" },
+            { "field": "DistressLevel", "title": "Distress Level" },
+            { "field": "PercentNum", "title": "Percent (%)" }
+          ]
         }
       },
       "resolve": { "legend": { "color": "shared" } },
-      "width": 420,
-      "height": 280
+      "width": 420, "height": 280
     };
 
-    /* Embed all specs */
+    /* EMBED ALL */
     vegaEmbed("#map1", specMap1, embedOpts);
     vegaEmbed("#map2", specMap2, embedOpts);
     vegaEmbed("#deaths", specDeaths, embedOpts);
