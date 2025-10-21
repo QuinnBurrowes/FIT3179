@@ -251,15 +251,84 @@
     /* ---------------- OTHER CHARTS ---------------- */
     const specDeaths = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes.csv" },
-      "mark": "line",
-      "encoding": {
-        "x": { "field": "Year", "type": "quantitative", "axis": { "format": "d" }},
-        "y": { "field": "Deaths", "type": "quantitative" },
-        "color": { "field": "Cause", "type": "nominal" }
+      "data": { 
+        "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/death_causes.csv" 
       },
-      "width": 1000, "height": 380
+      "width": 1000,
+      "height": 380,
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": { 
+              "field": "Year", 
+              "type": "quantitative", 
+              "axis": { "format": "d" },
+              "title": "Year"
+            },
+            "y": { 
+              "field": "Deaths", 
+              "type": "quantitative", 
+              "title": "Deaths"
+            },
+            "color": { 
+              "field": "Cause", 
+              "type": "nominal", 
+              "title": "Cause of Death" 
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "x1": 2016.5,
+                "y1": 14500,
+                "x2": 2017,
+                "y2": 14000,
+                "label": "Dementia trends to overtake\nheart disease"
+              }
+            ]
+          },
+          "layer": [
+            {
+              "mark": {
+                "type": "rule",
+                "stroke": "#444",
+                "strokeWidth": 1.5
+              },
+              "encoding": {
+                "x": { "field": "x1", "type": "quantitative" },
+                "x2": { "field": "x2" },
+                "y": { "field": "y1", "type": "quantitative" },
+                "y2": { "field": "y2" }
+              }
+            },
+            {
+              "mark": {
+                "type": "text",
+                "align": "right",
+                "baseline": "middle",
+                "dx": -6,
+                "dy": 0,
+                "fontSize": 13,
+                "fontWeight": "bold",
+                "color": "#111827"
+              },
+              "encoding": {
+                "x": { "field": "x1", "type": "quantitative" },
+                "y": { "field": "y1", "type": "quantitative" },
+                "text": { "field": "label" }
+              }
+            }
+          ]
+        }
+      ],
+      "config": {
+        "view": { "stroke": "transparent" }
+      }
     };
+
 
     const specHeatmap = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
