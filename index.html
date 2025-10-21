@@ -65,10 +65,10 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 420px;
+      gap: 160px;
       flex-wrap: wrap;
       width: 100%;
-      max-width: 1380px;
+      max-width: 1500px;
       margin: 0 auto 20px auto;
     }
 
@@ -76,13 +76,17 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 420px;
+      gap: 160px;
       flex-wrap: wrap;
       margin-top: 20px;
       margin-bottom: 20px;
     }
 
-    .chart { width: 420px; max-width: 100%; }
+    /* slightly wider charts for section 2 and 3 */
+    .chart {
+      width: 520px;
+      max-width: 100%;
+    }
 
     .caption, .text-block {
       margin-top: 8px;
@@ -96,7 +100,8 @@
 
     @media (max-width: 1450px) {
       .map-card { width: 48%; }
-      .section-2, .chart-row { gap: 180px; }
+      .section-2, .chart-row { gap: 120px; }
+      .chart { width: 460px; }
     }
 
     @media (max-width: 900px) {
@@ -260,8 +265,8 @@
     const specHeatmap = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "data": { "url": "https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/fruit_veg_data.csv" },
-      "width": 400,
-      "height": 240,
+      "width": 460,
+      "height": 260,
       "mark": "rect",
       "encoding": {
         "x": { "field": "AgeGroup", "type": "ordinal", "axis": { "title": "Age Group" } },
@@ -282,8 +287,8 @@
         }
       ],
       "transform": [{ "filter": "datum.Age_Group == ageSelect" }],
-      "width": 360,
-      "height": 320,
+      "width": 420,
+      "height": 340,
       "mark": { "type": "arc", "innerRadius": 70 },
       "encoding": {
         "theta": { "field": "Proportion", "type": "quantitative" },
@@ -302,8 +307,8 @@
 
     const specScatter = {
       "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 680,
-      "height": 380,
+      "width": 520,
+      "height": 400,
       "data":{"url":"https://raw.githubusercontent.com/QuinnBurrowes/FIT3179/main/activity_vs_distress.csv"},
       "mark":{"type":"point","filled":true,"size":140},
       "encoding":{
@@ -338,8 +343,8 @@
         }
       },
       "resolve": { "legend": { "color": "shared" } },
-      "width": 320,
-      "height": 260
+      "width": 420,
+      "height": 280
     };
 
     /* Embed all specs */
